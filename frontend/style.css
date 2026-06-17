@@ -199,6 +199,223 @@ main{
     background:#1d4ed8;
 }
 
+/* TAGS / TITRES DE SECTION */
+
+.section-tag{
+    display:inline-block;
+    color:#2563eb;
+    font-size:0.85rem;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    margin-bottom:12px;
+}
+
+.section-tag.centered{
+    display:block;
+    text-align:center;
+}
+
+.section-tag.light{
+    color:#7dd3fc;
+}
+
+.section-title{
+    text-align:center;
+    font-size:2rem;
+    font-weight:600;
+    color:#0f172a;
+    margin-bottom:48px;
+}
+
+/* QUI SOMMES-NOUS */
+
+.about-section{
+    max-width:1200px;
+    margin:0 auto;
+    padding:90px 24px;
+}
+
+.about-grid{
+    display:grid;
+    grid-template-columns:1.2fr 1fr;
+    gap:56px;
+    align-items:start;
+}
+
+.about-text h2{
+    font-size:2rem;
+    font-weight:600;
+    color:#0f172a;
+    margin-bottom:20px;
+    line-height:1.3;
+}
+
+.about-text p{
+    color:#475569;
+    font-size:1.02rem;
+    line-height:1.8;
+    margin-bottom:24px;
+}
+
+.text-link{
+    color:#2563eb;
+    font-weight:600;
+    text-decoration:none;
+    font-size:0.95rem;
+}
+
+.text-link:hover{
+    text-decoration:underline;
+}
+
+.about-values{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.value-card{
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-left:3px solid #38bdf8;
+    border-radius:10px;
+    padding:20px 24px;
+}
+
+.value-card h3{
+    color:#0f172a;
+    font-size:1.05rem;
+    font-weight:600;
+    margin-bottom:6px;
+}
+
+.value-card p{
+    color:#475569;
+    font-size:0.92rem;
+    line-height:1.6;
+}
+
+/* SECTIONS APERÇU (événements / actualités / activités) */
+
+.preview-section{
+    padding:90px 24px;
+    max-width:1200px;
+    margin:0 auto;
+}
+
+.preview-section.alt{
+    background:white;
+    max-width:100%;
+}
+
+.preview-section.alt > *{
+    max-width:1200px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.event-preview-grid,
+.news-preview-grid,
+.activity-preview-grid{
+    display:grid;
+    gap:24px;
+}
+
+.event-preview-grid,
+.news-preview-grid{
+    grid-template-columns:repeat(3, 1fr);
+}
+
+.activity-preview-grid{
+    grid-template-columns:repeat(4, 1fr);
+}
+
+.event-preview-card,
+.news-preview-card,
+.activity-preview-card{
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:14px;
+    padding:28px 24px;
+}
+
+.event-date-badge{
+    width:56px;
+    height:56px;
+    background:#0f172a;
+    color:white;
+    border-radius:10px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:16px;
+}
+
+.event-day{
+    font-size:1.25rem;
+    font-weight:600;
+    line-height:1;
+}
+
+.event-month{
+    font-size:0.7rem;
+    text-transform:uppercase;
+    color:#38bdf8;
+}
+
+.event-preview-card h3,
+.news-preview-card h3,
+.activity-preview-card h3{
+    color:#0f172a;
+    font-size:1.05rem;
+    font-weight:600;
+    margin-bottom:8px;
+}
+
+.event-preview-card p,
+.news-preview-card p,
+.activity-preview-card p{
+    color:#475569;
+    font-size:0.9rem;
+    line-height:1.6;
+}
+
+.news-date{
+    color:#2563eb;
+    font-size:0.8rem;
+    font-weight:600;
+    margin-bottom:8px;
+}
+
+/* ADHÉSION (bandeau d'appel à l'action) */
+
+.adhesion-section{
+    background:#0f172a;
+    padding:90px 24px;
+    text-align:center;
+}
+
+.adhesion-content{
+    max-width:640px;
+    margin:0 auto;
+}
+
+.adhesion-content h2{
+    color:white;
+    font-size:2rem;
+    font-weight:600;
+    margin-bottom:18px;
+}
+
+.adhesion-content p{
+    color:#cbd5e1;
+    font-size:1.02rem;
+    line-height:1.7;
+    margin-bottom:32px;
+}
+
 /* FOOTER */
 
 footer{
@@ -344,6 +561,10 @@ input:focus-visible{
     .footer-brand{
         grid-column:1 / -1;
     }
+
+    .activity-preview-grid{
+        grid-template-columns:repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 768px){
@@ -453,6 +674,36 @@ input:focus-visible{
     .footer-links,
     .footer-contact{
         align-items:center;
+    }
+
+    .about-grid{
+        grid-template-columns:1fr;
+        gap:36px;
+    }
+
+    .about-text h2{
+        font-size:1.6rem;
+    }
+
+    .section-title{
+        font-size:1.6rem;
+        margin-bottom:32px;
+    }
+
+    .event-preview-grid,
+    .news-preview-grid,
+    .activity-preview-grid{
+        grid-template-columns:1fr;
+    }
+
+    .about-section,
+    .preview-section,
+    .adhesion-section{
+        padding:60px 20px;
+    }
+
+    .adhesion-content h2{
+        font-size:1.6rem;
     }
 }
 
