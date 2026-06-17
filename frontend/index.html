@@ -3,10 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Association des Tchadiens d'Occitanie — unité, solidarité et promotion de la culture tchadienne à Toulouse et en région Occitanie.">
     <title>Association des Tchadiens d'Occitanie</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpeg">
 
+    <!-- Police-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,76 +21,101 @@
         <nav class="navbar">
 
             <div class="logo-container">
-                <img src="logo.jpeg" alt="Logo">
-                <h2>Association des Tchadiens d'Occitanie</h2>
+                <img src="logo.jpeg" alt="Logo de l'Association des Tchadiens d'Occitanie">
+                <h2>ATO</h2>
             </div>
 
-            <ul class="nav-links">
-                <li><a href="#">Accueil</a></li>
-                <li><a href="#">Événements</a></li>
-                <li><a href="#">Activités</a></li>
-                 <li><a href="#">Membres</a></li>
-                
-            </ul>
+            <a href="#adhesion" class="btn-adhesion btn-adhesion-mobile">Adhésion</a>
 
-            <a href="#" class="btn-adhesion">Adhésion</a>
+            <button class="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-links">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="nav-group">
+                <ul class="nav-links" id="nav-links">
+                    <li><a href="#accueil">Accueil</a></li>
+                    <li><a href="#evenements">Événements</a></li>
+                    <li><a href="#activites">Activités</a></li>
+                </ul>
+                <a href="#adhesion" class="btn-adhesion btn-adhesion-desktop">Adhésion</a>
+            </div>
 
         </nav>
     </header>
 
-    <section class="hero">
+    <main>
 
-        <img src="Heimat.jpg" alt="Tchad">
+        <section class="hero" id="accueil">
 
-        <div class="overlay"></div>
+            <img src="Heimat.jpg" alt="Paysage représentatif du Tchad">
 
-        <div class="hero-content">
-            <h1>Bienvenue à l'Association des Tchadiens d'Occitanie</h1>
+            <div class="overlay"></div>
 
-            <p>
-                Ensemble pour promouvoir la culture tchadienne,
-                renforcer la solidarité et accompagner notre communauté.
-            </p>
+            <div class="hero-content">
+                <h1>Bienvenue à l'Association des Tchadiens d'Occitanie</h1>
 
-            <a href="#" class="hero-btn">
-                Nous rejoindre
-            </a>
-        </div>
-    </section>
+                <p>
+                    Ensemble pour promouvoir la culture tchadienne,
+                    renforcer la solidarité et accompagner notre communauté.
+                </p>
+
+                <a href="#adhesion" class="hero-btn">
+                    Nous rejoindre
+                </a>
+            </div>
+        </section>
+
+    </main>
 
     <footer>
-    <div class="footer-container">
+        <div class="footer-top">
+            <div class="footer-container">
 
-        <div class="footer-section">
-            <h3>Association des Tchadiens d'Occitanie</h3>
-            <p>
-                Promouvoir la solidarité, la culture et l'entraide
-                au sein de la communauté tchadienne en Occitanie.
-            </p>
+                <div class="footer-section footer-brand">
+                    <div class="footer-logo">
+                        <img src="logo.jpeg" alt="Logo de l'Association des Tchadiens d'Occitanie">
+                        <h3>ATO</h3>
+                    </div>
+                    <p>
+                        Promouvoir la solidarité, la culture et l'entraide
+                        au sein de la communauté tchadienne en Occitanie.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><img src="Face.png" alt="Facebook"></a>
+                        <a href="#" aria-label="Instagram"><img src="insta.webp" alt="Instagram"></a>
+                        <a href="#" aria-label="WhatsApp"><img src="whats.jpg" alt="WhatsApp"></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Navigation</h3>
+                    <ul class="footer-links">
+                        <li><a href="#accueil">Accueil</a></li>
+                        <li><a href="#evenements">Événements</a></li>
+                        <li><a href="#activites">Activités</a></li>
+                        <li><a href="#adhesion">Adhésion</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <ul class="footer-contact">
+                        <li>Toulouse, France</li>
+                        <li><a href="mailto:contact@ato.fr">contact@ato.fr</a></li>
+                        <li><a href="tel:+33000000000">+33 xx xx xx xx</a></li>
+                    </ul>
+                </div>
+
+            </div>
         </div>
 
-        <div class="footer-section">
-            <h3>Contact</h3>
-            <p> Toulouse, France</p>
-            <p> contact@ato.fr</p>
-            <p> +33 xx xx xx xx</p>
+        <div class="footer-bottom">
+            © 2026 Association des Tchadiens d'Occitanie. Unité, Travail, Progrès.
         </div>
+    </footer>
 
-        <div class="footer-section">
-            <h3>Suivez-nous</h3>
-
-<div class="social-links">
-    <a href="#"><img src="Face.png" alt="Facebook"></a>
-    <a href="#"><img src="insta.webp" alt="Instagram"></a>
-    <a href="#"><img src="whats.jpg" alt="WhatsApp"></a>
-</div>
-
-    </div>
-
-    <div class="footer-bottom">
-        © 2026 Association des Tchadiens d'Occitanie. Unité , Travail , Progrès.
-    </div>
-</footer>
-
+    <script src="script.js"></script>
 </body>
 </html>
