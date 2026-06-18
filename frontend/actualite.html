@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Dernières actualités de l'Association des Tchadiens d'Occitanie.">
-    <title>Actualités — Association des Tchadiens d'Occitanie</title>
+    <meta name="description" content="Actualité de l'Association des Tchadiens d'Occitanie.">
+    <title id="page-title">Actualité — Association des Tchadiens d'Occitanie</title>
     <link rel="icon" type="image/jpeg" href="image/logo.jpeg">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -48,61 +48,16 @@
 
         <section class="page-header">
             <span class="eyebrow">Actualités</span>
-            <h1>Les dernières nouvelles de l'association</h1>
-            <p>Le récit de nos temps forts, à mesure qu'ils se passent.</p>
+            <h1 id="article-title">Chargement...</h1>
+            <p id="article-date"></p>
         </section>
 
-        <section class="news-section">
-            <div class="news-grid">
+        <section class="article-section">
+            <div class="article-content">
+                <div class="article-image" id="article-image"></div>
+                <div id="article-body"></div>
 
-                <article class="news-card">
-                    <div class="news-thumb thumb-terre" aria-hidden="true">
-                        <!-- Remplacer par : <img src="image/news-lancement-site.jpg" alt="..."> -->
-                    </div>
-                    <div class="news-body">
-                        <p class="news-date">2 juin 2026</p>
-                        <h3>Lancement officiel du nouveau site internet</h3>
-                        <p>L'association se modernise avec une présence en ligne pour faciliter les adhésions, centraliser les événements et simplifier la communication avec ses membres.</p>
-                        <a href="actualite.html?id=lancement-site" class="link-arrow">Lire la suite →</a>
-                    </div>
-                </article>
-
-                <article class="news-card">
-                    <div class="news-thumb">
-                        <img src="image/Forum_langue.jpeg" alt="Bénévoles et membres de l'association tenant le drapeau du Tchad au Forum des Langues, Toulouse">
-                    </div>
-                    <div class="news-body">
-                        <p class="news-date">24 mai 2026</p>
-                        <h3>Notre participation au Forum des Langues à Toulouse</h3>
-                        <p>Place Saint-Sernin, l'association a tenu un stand riche en partage et en découvertes, aux côtés de nombreuses autres associations. Merci à nos bénévoles et à toute la communauté tchadienne pour cette belle journée.</p>
-                        <a href="actualite.html?id=forum-langues" class="link-arrow">Lire la suite →</a>
-                    </div>
-                </article>
-
-                <article class="news-card">
-                    <div class="news-thumb">
-                        <img src="image/Journee_culturelle.jpeg" alt="Journée culturelle des Tchadiens à Toulouse">
-                    </div>
-                    <div class="news-body">
-                        <p class="news-date">2 mai 2026</p>
-                        <h3>Retour sur notre journée culturelle à Toulouse</h3>
-                        <p>Au-delà des souvenirs, cette journée a porté une dynamique collective qui continue de grandir. L'association poursuit son chemin avec celles et ceux qui souhaitent s'investir, à leur manière.</p>
-                        <a href="actualite.html?id=journee-culturelle" class="link-arrow">Lire la suite →</a>
-                    </div>
-                </article>
-
-                <article class="news-card">
-                    <div class="news-thumb">
-                        <img src="image/Journee_integration.jpeg" alt="Journée d'intégration des nouveaux étudiants à Toulouse">
-                    </div>
-                    <div class="news-body">
-                        <p class="news-date">26 octobre 2025</p>
-                        <h3>Retour sur notre journée d'intégration des nouveaux étudiants</h3>
-                        <p>Une journée chaleureuse pour accueillir les nouveaux étudiants tchadiens arrivés à Toulouse, créer du lien dès leur arrivée et leur présenter la vie de l'association.</p>
-                        <a href="actualite.html?id=journee-integration" class="link-arrow">Lire la suite →</a>
-                    </div>
-                </article>
-
+                <a href="actualites.html" class="link-arrow back-link">← Retour aux actualités</a>
             </div>
         </section>
 
@@ -157,5 +112,6 @@
     </footer>
 
     <script src="script.js"></script>
+    <script src="actualite.js"></script>
 </body>
 </html>

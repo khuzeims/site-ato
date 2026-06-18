@@ -5,14 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Association des Tchadiens d'Occitanie — unité, solidarité et promotion de la culture tchadienne à Toulouse et en région Occitanie.">
     <title>Association des Tchadiens d'Occitanie</title>
-    <link rel="icon" type="image/jpeg" href="logo.jpeg">
+    <link rel="icon" type="image/jpeg" href="image/logo.jpeg">
 
-    <!-- Police-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400..600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -20,12 +18,10 @@
     <header>
         <nav class="navbar">
 
-            <div class="logo-container">
-                <img src="logo.jpeg" alt="Logo de l'Association des Tchadiens d'Occitanie">
-                <h2>ATO</h2>
-            </div>
-
-            <a href="adhesion.html" class="btn-adhesion btn-adhesion-mobile">Adhésion</a>
+            <a href="index.html" class="logo-container">
+                <img src="image/logo.jpeg" alt="Logo de l'Association des Tchadiens d'Occitanie">
+                <span>ATO</span>
+            </a>
 
             <button class="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-links">
                 <span></span>
@@ -35,8 +31,7 @@
 
             <div class="nav-group">
                 <ul class="nav-links" id="nav-links">
-                    <li><a href="index.html">Accueil</a></li>
-                    <li><a href="#qui-sommes-nous">Qui sommes-nous</a></li>
+                    <li><a href="index.html" class="active">Accueil</a></li>
                     <li><a href="evenements.html">Événements</a></li>
                     <li><a href="actualites.html">Actualités</a></li>
                     <li><a href="activites.html">Activités</a></li>
@@ -44,134 +39,108 @@
                 <a href="adhesion.html" class="btn-adhesion btn-adhesion-desktop">Adhésion</a>
             </div>
 
+            <a href="adhesion.html" class="btn-adhesion btn-adhesion-mobile">Adhésion</a>
+
         </nav>
     </header>
 
     <main>
 
         <section class="hero">
-
-            <img src="Heimat.jpg" alt="Paysage représentatif du Tchad">
-
-            <div class="overlay"></div>
-
-            <div class="hero-content">
-                <h1>Bienvenue à l'Association des Tchadiens d'Occitanie</h1>
-
+            <div class="hero-text">
+                <span class="eyebrow">Occitanie, France</span>
+                <h1>Bienvenue à l'<em>Association des Tchadiens d'Occitanie</em>.</h1>
                 <p>
-                    Ensemble pour promouvoir la culture tchadienne,
-                    renforcer la solidarité et accompagner notre communauté.
+                    Une communauté qui se retrouve, se soutient et fait vivre
+                    ses racines à travers les rencontres, la culture et l'entraide.
                 </p>
+                <div class="hero-actions">
+                    <a href="adhesion.html" class="btn-primary">Nous rejoindre</a>
+                    <a href="#qui-sommes-nous" class="btn-text">Découvrir l'association ↓</a>
+                </div>
+            </div>
 
-                <a href="adhesion.html" class="hero-btn">
-                    Nous rejoindre
-                </a>
+            <div class="hero-visual">
+                <img src="image/Heimat.jpg" alt="Paysage représentatif du Tchad">
+                <svg class="weave" viewBox="0 0 200 200" aria-hidden="true">
+                    <path d="M0,60 C50,20 90,100 200,40" />
+                    <path d="M0,140 C60,180 110,90 200,150" />
+                </svg>
             </div>
         </section>
 
         <section class="about-section" id="qui-sommes-nous">
             <div class="about-grid">
-                <div class="about-text">
-                    <span class="section-tag">Qui sommes-nous</span>
-                    <h2>Une communauté unie, loin de chez nous</h2>
+                <div class="about-lead">
+                    <span class="eyebrow">Qui sommes-nous</span>
+                    <h2>Une communauté unie au coeur de l'Occitanie</h2>
+                </div>
+                <div class="about-body">
                     <p>
-                        Née de la volonté de rassembler les Tchadiens d'Occitanie, notre association
-                        est un espace de solidarité, d'entraide et de fierté culturelle. Apolitique
-                        et ouverte à tous, elle accompagne ses membres au quotidien et fait vivre les
-                        traditions tchadiennes à travers des rencontres, des événements et des projets
-                        communs avec la région.
+                        Née de la volonté de rassembler les Tchadiens d'Occitanie, notre
+                        association est un espace de solidarité, d'entraide et de fierté
+                        culturelle. Apolitique et ouverte à tous, elle accompagne ses
+                        membres au quotidien et fait vivre les traditions tchadiennes à
+                        travers des rencontres, des événements et des projets communs
+                        avec la région.
                     </p>
-                    <a href="adhesion.html" class="text-link">Rejoindre l'association →</a>
-                </div>
-
-                <div class="about-values">
-                    <div class="value-card">
-                        <h3>Solidarité</h3>
-                        <p>Un soutien concret pour nos membres dans les moments importants de leur vie.</p>
-                    </div>
-                    <div class="value-card">
-                        <h3>Culture</h3>
-                        <p>La transmission des traditions, de la musique et des langues tchadiennes.</p>
-                    </div>
-                    <div class="value-card">
-                        <h3>Ouverture</h3>
-                        <p>Des échanges sincères avec les habitants et associations d'Occitanie.</p>
-                    </div>
+                    <a href="adhesion.html" class="link-arrow">Rejoindre l'association →</a>
                 </div>
             </div>
-        </section>
 
-        <section class="preview-section">
-            <span class="section-tag centered">Événements</span>
-            <h2 class="section-title">Notre prochain rendez-vous</h2>
-
-            <div class="event-preview-grid single">
-                <article class="event-preview-card">
-                    <div class="event-date-badge">
-                        <span class="event-day">12</span>
-                        <span class="event-month">Juil.</span>
-                    </div>
-                    <h3>Fête nationale du Tchad</h3>
-                    <p>Soirée culturelle, repas traditionnel et musique à Toulouse.</p>
-                </article>
-            </div>
-
-            <div class="preview-cta">
-                <a href="evenements.html" class="text-link">Voir tous les événements →</a>
-            </div>
-        </section>
-
-        <section class="preview-section alt">
-            <span class="section-tag centered">Actualités</span>
-            <h2 class="section-title">La dernière nouvelle</h2>
-
-            <div class="news-preview-grid single">
-                <article class="news-preview-card">
-                    <p class="news-date">2 juin 2026</p>
-                    <h3>Lancement officiel du nouveau site internet</h3>
-                    <p>L'association se modernise pour faciliter les adhésions et la communication.</p>
-                </article>
-            </div>
-
-            <div class="preview-cta">
-                <a href="actualites.html" class="text-link">Voir toutes les actualités →</a>
-            </div>
-        </section>
-
-        <section class="preview-section" id="activites">
-            <span class="section-tag centered">Activités</span>
-            <h2 class="section-title">Ce que nous proposons</h2>
-
-            <div class="activity-preview-grid">
-                <div class="activity-preview-card">
-                    <h3>Cours de langues</h3>
-                    <p>Ateliers d'arabe tchadien et de français pour toutes les générations.</p>
+            <div class="values-row">
+                <div class="value-item">
+                    <span class="value-mark">Intégration & accompagnement</span>
+                    <p>Aide aux démarches administratives, orientation vers les services publics, soutien linguistique pour les nouveaux arrivants..</p>
                 </div>
-                <div class="activity-preview-card">
-                    <h3>Soirées culturelles</h3>
-                    <p>Musique, danse et gastronomie tchadienne à l'honneur.</p>
+                <div class="value-item">
+                    <span class="value-mark">Solidarité</span>
+                    <p>Collectes,actions humanitaires, entraide entre les membres en cas de difficultés.</p>
                 </div>
-                <div class="activity-preview-card">
-                    <h3>Soutien scolaire</h3>
-                    <p>Accompagnement éducatif pour les enfants de la communauté.</p>
+                 <div class="value-item">
+                    <span class="value-mark">Culture</span>
+                    <p>La transmission des traditions, de la musique et des langues tchadiennes.</p>
                 </div>
-                <div class="activity-preview-card">
-                    <h3>Entraide solidaire</h3>
-                    <p>Un soutien présent lors des événements familiaux importants.</p>
+                <div class="value-item">
+                    <span class="value-mark">Ouverture</span>
+                    <p>Des échanges sincères avec les habitants et associations d'Occitanie.</p>
                 </div>
             </div>
         </section>
 
-        <section class="adhesion-section" id="adhesion">
-            <div class="adhesion-content">
-                <span class="section-tag centered light">Adhésion</span>
+        <section class="explore-section">
+            <span class="eyebrow centered">À découvrir</span>
+            <h2 class="explore-title">La vie de l'association</h2>
+
+            <div class="explore-grid">
+                <a href="evenements.html" class="explore-card">
+                    <span class="explore-number">01</span>
+                    <h3>Événements</h3>
+                    <p>Nos prochains rendez-vous et célébrations, à Toulouse et ailleurs en Occitanie.</p>
+                    <span class="link-arrow">Voir les événements →</span>
+                </a>
+
+                <a href="actualites.html" class="explore-card">
+                    <span class="explore-number">02</span>
+                    <h3>Actualités</h3>
+                    <p>Les dernières nouvelles de la communauté et de la vie associative.</p>
+                    <span class="link-arrow">Voir les actualités →</span>
+                </a>
+
+                <a href="activites.html" class="explore-card">
+                    <span class="explore-number">03</span>
+                    <h3>Activités</h3>
+                    <p>Langues, culture, soutien scolaire et entraide tout au long de l'année.</p>
+                    <span class="link-arrow">Voir les activités →</span>
+                </a>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="cta-content">
                 <h2>Envie de nous rejoindre ?</h2>
-                <p>
-                    Devenir adhérent, c'est intégrer une communauté solidaire et participer
-                    activement à la vie de l'association. Remplissez le formulaire en quelques
-                    minutes pour démarrer votre adhésion.
-                </p>
-                <a href="#" class="hero-btn">Remplir le formulaire d'adhésion</a>
+                <p>Devenir adhérent, c'est intégrer une communauté solidaire et participer activement à la vie de l'association.</p>
+                <a href="adhesion.html" class="btn-primary on-dark">Remplir le formulaire d'adhésion</a>
             </div>
         </section>
 
@@ -181,31 +150,30 @@
         <div class="footer-top">
             <div class="footer-container">
 
-                <div class="footer-section footer-brand">
+                <div class="footer-brand">
                     <div class="footer-logo">
-                        <img src="logo.jpeg" alt="Logo de l'Association des Tchadiens d'Occitanie">
-                        <h3>ATO</h3>
+                        <img src="image/logo.jpeg" alt="Logo de l'Association des Tchadiens d'Occitanie">
+                        <span>ATO</span>
                     </div>
                     <p>
                         Promouvoir la solidarité, la culture et l'entraide
                         au sein de la communauté tchadienne en Occitanie.
                     </p>
                     <div class="social-links">
-                        <a href="#" aria-label="Facebook"><img src="Face.png" alt="Facebook"></a>
-                        <a href="#" aria-label="Instagram"><img src="insta.webp" alt="Instagram"></a>
-                        <a href="#" aria-label="WhatsApp"><img src="whats.jpg" alt="WhatsApp"></a>
+                        <a href="#" aria-label="Facebook"><img src="image/Face.png" alt="Facebook"></a>
+                        <a href="#" aria-label="Instagram"><img src="image/insta.webp" alt="Instagram"></a>
+                        <a href="#" aria-label="WhatsApp"><img src="image/whats.jpg" alt="WhatsApp"></a>
                     </div>
                 </div>
 
                 <div class="footer-section">
                     <h3>Navigation</h3>
                     <ul class="footer-links">
-                        <li><a href="#accueil">Accueil</a></li>
-                        <li><a href="#qui-sommes-nous">Qui sommes-nous</a></li>
-                        <li><a href="#evenements">Événements</a></li>
-                        <li><a href="#actualites">Actualités</a></li>
-                        <li><a href="#activites">Activités</a></li>
-                        <li><a href="#adhesion">Adhésion</a></li>
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="evenements.html">Événements</a></li>
+                        <li><a href="actualites.html">Actualités</a></li>
+                        <li><a href="activites.html">Activités</a></li>
+                        <li><a href="adhesion.html">Adhésion</a></li>
                     </ul>
                 </div>
 

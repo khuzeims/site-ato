@@ -10,7 +10,6 @@ if (navToggle && navLinks) {
         navToggle.setAttribute('aria-label', isOpen ? 'Fermer le menu' : 'Ouvrir le menu');
     });
 
-    // Ferme le menu après un clic sur un lien (mobile)
     navLinks.querySelectorAll('a').forEach((link) => {
         link.addEventListener('click', () => {
             navLinks.classList.remove('open');
@@ -20,4 +19,3 @@ if (navToggle && navLinks) {
         });
     });
 }
-
