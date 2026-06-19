@@ -4,8 +4,8 @@ const actualites = {
     "lancement-site": {
         titre: "Lancement officiel du nouveau site internet",
         date: "2 juin 2026",
-        image: null,
-        imageClass: "thumb-terre",
+        image: "image/glenn-carstens-peters-npxXWgQ33ZQ-unsplash.jpg",
+        imageAlt: "Photo du lancement du nouveau site internet de l'association",
         contenu: [
             "L'association se modernise avec une présence en ligne pour faciliter les adhésions, centraliser les événements et simplifier la communication avec ses membres.",
             "Ce nouveau site a été conçu pour que chacun puisse facilement consulter les actualités, découvrir les événements à venir et rejoindre l'association en quelques clics.",

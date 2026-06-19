@@ -167,6 +167,10 @@ header{
     transform:translateY(-2px);
 }
 
+.btn-adhesion.active{
+    background:var(--terre-dark);
+}
+
 .btn-adhesion-mobile{
     display:none;
 }
@@ -606,6 +610,151 @@ main{
     margin-top:12px;
 }
 
+/* FORMULAIRE D'ADHÉSION */
+
+.form-section{
+    max-width:680px;
+    margin:0 auto;
+    padding:48px 32px 96px;
+}
+
+.adhesion-form{
+    background:var(--sable);
+    border-radius:18px;
+    padding:44px;
+}
+
+.form-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.form-group{
+    margin-bottom:22px;
+    display:flex;
+    flex-direction:column;
+}
+
+.form-group.full{
+    grid-column:1 / -1;
+}
+
+.form-group label{
+    font-size:0.9rem;
+    font-weight:600;
+    color:var(--nuit);
+    margin-bottom:8px;
+}
+
+.form-group input{
+    font-family:'Inter',sans-serif;
+    font-size:0.95rem;
+    padding:13px 16px;
+    border:1px solid rgba(26,43,60,0.18);
+    border-radius:8px;
+    background:var(--creme);
+    color:var(--nuit);
+    transition:border-color 0.25s, box-shadow 0.25s;
+}
+
+.form-group input:focus{
+    outline:none;
+    border-color:var(--terre);
+    box-shadow:0 0 0 3px rgba(184,84,47,0.15);
+}
+
+.checkbox-group{
+    flex-direction:row;
+    align-items:flex-start;
+    gap:10px;
+}
+
+.checkbox-group input{
+    margin-top:3px;
+    width:auto;
+}
+
+.checkbox-group label{
+    margin-bottom:0;
+    font-weight:400;
+    font-size:0.88rem;
+    color:var(--texte-clair);
+}
+
+.form-submit{
+    width:100%;
+    border:none;
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+}
+
+.form-submit:disabled{
+    opacity:0.7;
+    cursor:not-allowed;
+    transform:none;
+}
+
+.form-status{
+    margin-top:18px;
+    text-align:center;
+    font-size:0.9rem;
+    font-weight:500;
+    min-height:1.2em;
+}
+
+.form-status.success{
+    color:#3F6B2E;
+}
+
+.form-status.error{
+    color:var(--terre-dark);
+}
+
+/* ACTIVITÉS */
+
+.activities-section{
+    max-width:1240px;
+    margin:0 auto;
+    padding:48px 32px 96px;
+}
+
+.activities-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:24px;
+}
+
+.activity-card{
+    background:var(--sable);
+    border-radius:14px;
+    padding:32px 28px;
+}
+
+.activity-tag{
+    display:inline-block;
+    font-size:0.75rem;
+    font-weight:600;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+    color:var(--terre);
+    background:var(--creme);
+    padding:5px 12px;
+    border-radius:20px;
+    margin-bottom:16px;
+}
+
+.activity-card h3{
+    font-size:1.2rem;
+    margin-bottom:10px;
+}
+
+.activity-card p{
+    font-size:0.95rem;
+    color:var(--texte-clair);
+    line-height:1.7;
+}
+
 /* FOOTER */
 
 footer{
@@ -759,6 +908,10 @@ button:focus-visible{
         grid-template-columns:1fr 1fr;
     }
 
+    .activities-grid{
+        grid-template-columns:repeat(2, 1fr);
+    }
+
     .footer-brand{
         grid-column:1 / -1;
     }
@@ -851,6 +1004,18 @@ button:focus-visible{
         height:220px;
     }
 
+    .form-section{
+        padding:32px 20px 64px;
+    }
+
+    .adhesion-form{
+        padding:28px 22px;
+    }
+
+    .form-row{
+        grid-template-columns:1fr;
+    }
+
     .values-row{
         grid-template-columns:1fr;
         gap:28px;
@@ -861,6 +1026,10 @@ button:focus-visible{
     }
 
     .news-grid{
+        grid-template-columns:1fr;
+    }
+
+    .activities-grid{
         grid-template-columns:1fr;
     }
 
