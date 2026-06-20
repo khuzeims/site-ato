@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Gestion des actualités — Administration ATO</title>
+    <link rel="icon" type="image/jpeg" href="../image/logo.jpeg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400..600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+
+    <div class="admin-layout">
+
+        <aside class="admin-sidebar">
+            <div class="admin-sidebar-logo">
+                <img src="../image/logo.jpeg" alt="Logo de l'Association des Tchadiens d'Occitanie">
+                <span>ATO admin</span>
+            </div>
+
+            <nav class="admin-nav">
+                <a href="dashboard.html" class="admin-nav-link">Tableau de bord</a>
+                <a href="gestion-evenements.html" class="admin-nav-link">Événements</a>
+                <a href="gestion-actualites.html" class="admin-nav-link active">Actualités</a>
+            </nav>
+
+            <button class="admin-logout" id="logout-btn">Se déconnecter</button>
+        </aside>
+
+        <main class="admin-main">
+
+            <header class="admin-header admin-header-row">
+                <div>
+                    <h1>Actualités</h1>
+                    <p>Ajoutez, modifiez ou supprimez les actualités de l'association.</p>
+                </div>
+                <button class="btn-primary" id="add-news-btn">+ Ajouter une actualité</button>
+            </header>
+
+            <section class="admin-section">
+                <div class="admin-table-wrap">
+                    <table class="admin-table" id="news-table">
+                        <thead>
+                            <tr>
+                                <th>Photo</th>
+                                <th>Titre</th>
+                                <th>Date</th>
+                                <th>Extrait</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="news-tbody">
+                            <tr><td colspan="5" class="admin-table-loading">Chargement...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Modale d'ajout / modification d'actualité -->
+    <div class="admin-modal" id="news-modal" hidden>
+        <div class="admin-modal-box">
+            <button class="admin-modal-close" id="news-modal-close" aria-label="Fermer">✕</button>
+            <h2 id="news-modal-title">Ajouter une actualité</h2>
+
+            <form id="news-form" novalidate>
+                <input type="hidden" id="news-id">
+
+                <div class="form-group full">
+                    <label for="news-titre">Titre *</label>
+                    <input type="text" id="news-titre" required>
+                </div>
+
+                <div class="form-group full">
+                    <label for="news-date">Date *</label>
+                    <input type="date" id="news-date" required>
+                </div>
+
+                <div class="form-group full">
+                    <label for="news-contenu">Contenu *</label>
+                    <textarea id="news-contenu" rows="6" required placeholder="Un paragraphe par ligne."></textarea>
+                    <p class="form-hint">Astuce : commencez un nouveau paragraphe à la ligne.</p>
+                </div>
+
+                <div class="form-group full">
+                    <label for="news-photo">Photo de l'actualité</label>
+                    <input type="file" id="news-photo" accept="image/*">
+                    <p class="form-hint">Format JPG ou PNG, 2 Mo maximum.</p>
+                    <img id="news-photo-preview" class="admin-photo-preview" hidden alt="Aperçu de la photo">
+                </div>
+
+                <button type="submit" class="btn-primary form-submit" id="news-submit-btn">Enregistrer</button>
+
+                <p class="form-status" id="news-form-status" role="status" aria-live="polite"></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="admin-auth.js"></script>
+    <script src="gestion-actualites.js"></script>
+</body>
+</html>

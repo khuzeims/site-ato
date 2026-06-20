@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Gestion des événements — Administration ATO</title>
+    <link rel="icon" type="image/jpeg" href="../image/logo.jpeg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400..600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+
+    <div class="admin-layout">
+
+        <aside class="admin-sidebar">
+            <div class="admin-sidebar-logo">
+                <img src="../image/logo.jpeg" alt="Logo de l'Association des Tchadiens d'Occitanie">
+                <span>ATO admin</span>
+            </div>
+
+            <nav class="admin-nav">
+                <a href="dashboard.html" class="admin-nav-link">Tableau de bord</a>
+                <a href="gestion-evenements.html" class="admin-nav-link active">Événements</a>
+                <a href="gestion-actualites.html" class="admin-nav-link">Actualités</a>
+            </nav>
+
+            <button class="admin-logout" id="logout-btn">Se déconnecter</button>
+        </aside>
+
+        <main class="admin-main">
+
+            <header class="admin-header admin-header-row">
+                <div>
+                    <h1>Événements</h1>
+                    <p>Ajoutez, modifiez ou supprimez les événements de l'association.</p>
+                </div>
+                <button class="btn-primary" id="add-event-btn">+ Ajouter un événement</button>
+            </header>
+
+            <section class="admin-section">
+                <div class="admin-table-wrap">
+                    <table class="admin-table" id="events-table">
+                        <thead>
+                            <tr>
+                                <th>Photo</th>
+                                <th>Titre</th>
+                                <th>Date</th>
+                                <th>Lieu</th>
+                                <th>Places</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="events-tbody">
+                            <tr><td colspan="7" class="admin-table-loading">Chargement...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Modale d'ajout / modification d'événement -->
+    <div class="admin-modal" id="event-modal" hidden>
+        <div class="admin-modal-box">
+            <button class="admin-modal-close" id="event-modal-close" aria-label="Fermer">✕</button>
+            <h2 id="event-modal-title">Ajouter un événement</h2>
+
+            <form id="event-form" novalidate>
+                <input type="hidden" id="event-id">
+
+                <div class="form-group full">
+                    <label for="event-titre">Titre *</label>
+                    <input type="text" id="event-titre" required>
+                </div>
+
+                <div class="form-group full">
+                    <label for="event-description">Description *</label>
+                    <textarea id="event-description" rows="3" required></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="event-date">Date *</label>
+                        <input type="date" id="event-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="event-lieu">Lieu *</label>
+                        <input type="text" id="event-lieu" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="event-places">Places disponibles *</label>
+                        <input type="number" id="event-places" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="event-statut">Statut *</label>
+                        <select id="event-statut" required>
+                            <option value="à venir">À venir</option>
+                            <option value="passé">Passé</option>
+                            <option value="annulé">Annulé</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group full">
+                    <label for="event-photo">Photo de l'événement</label>
+                    <input type="file" id="event-photo" accept="image/*">
+                    <p class="form-hint">Format JPG ou PNG, 2 Mo maximum.</p>
+                    <img id="event-photo-preview" class="admin-photo-preview" hidden alt="Aperçu de la photo">
+                </div>
+
+                <button type="submit" class="btn-primary form-submit" id="event-submit-btn">Enregistrer</button>
+
+                <p class="form-status" id="event-form-status" role="status" aria-live="polite"></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="admin-auth.js"></script>
+    <script src="gestion-evenements.js"></script>
+</body>
+</html>

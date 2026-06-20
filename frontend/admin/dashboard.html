@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Tableau de bord — Administration ATO</title>
+    <link rel="icon" type="image/jpeg" href="../image/logo.jpeg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400..600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+
+    <div class="admin-layout">
+
+        <aside class="admin-sidebar">
+            <div class="admin-sidebar-logo">
+                <img src="../image/logo.jpeg" alt="Logo de l'Association des Tchadiens d'Occitanie">
+                <span>ATO admin</span>
+            </div>
+
+            <nav class="admin-nav">
+                <a href="dashboard.html" class="admin-nav-link active">Tableau de bord</a>
+                <a href="gestion-evenements.html" class="admin-nav-link">Événements</a>
+                <a href="gestion-actualites.html" class="admin-nav-link">Actualités</a>
+            </nav>
+
+            <button class="admin-logout" id="logout-btn">Se déconnecter</button>
+        </aside>
+
+        <main class="admin-main">
+
+            <header class="admin-header">
+                <h1>Tableau de bord</h1>
+                <p>Demandes d'adhésion et inscriptions aux événements.</p>
+            </header>
+
+            <section class="admin-section">
+                <h2>Demandes d'adhésion</h2>
+
+                <div class="admin-table-wrap">
+                    <table class="admin-table" id="adhesions-table">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Email</th>
+                                <th>Téléphone</th>
+                                <th>Adresse</th>
+                                <th>Date</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adhesions-tbody">
+                            <tr><td colspan="7" class="admin-table-loading">Chargement...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="admin-section">
+                <h2>Inscriptions aux événements</h2>
+
+                <div class="admin-table-wrap">
+                    <table class="admin-table" id="inscriptions-table">
+                        <thead>
+                            <tr>
+                                <th>Événement</th>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Email</th>
+                                <th>Téléphone</th>
+                                <th>Tarif</th>
+                                <th>Date d'inscription</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inscriptions-tbody">
+                            <tr><td colspan="7" class="admin-table-loading">Chargement...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="admin-auth.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>

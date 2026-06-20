@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Événements à venir et passés organisés par l'Association des Tchadiens d'Occitanie.">
+    <title>Événements — Association des Tchadiens d'Occitanie</title>
+    <link rel="icon" type="image/jpeg" href="image/logo.jpeg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400..600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+
+            <a href="index.html" class="logo-container">
+                <img src="image/logo.jpeg" alt="Logo de l'Association des Tchadiens d'Occitanie">
+                <span>ATO</span>
+            </a>
+
+            <button class="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-links">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="nav-group">
+                <ul class="nav-links" id="nav-links">
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="evenements.html" class="active">Événements</a></li>
+                    <li><a href="actualites.html">Actualités</a></li>
+                    <li><a href="activites.html">Activités</a></li>
+                </ul>
+                <a href="adhesion.html" class="btn-adhesion btn-adhesion-desktop">Adhésion</a>
+            </div>
+
+            <a href="adhesion.html" class="btn-adhesion btn-adhesion-mobile">Adhésion</a>
+
+        </nav>
+    </header>
+
+    <main>
+
+        <section class="page-header">
+            <span class="eyebrow">Événements</span>
+            <h1>La vie de l'association en images</h1>
+            <p>Nos prochains rendez-vous, et le souvenir de ceux qui ont marqué notre communauté.</p>
+        </section>
+
+        <section class="upcoming-section">
+            <h2 class="section-heading">À venir</h2>
+
+            <div class="event-card-upcoming">
+                <div class="event-card-info">
+                    <span class="event-status-badge">À venir</span>
+                    <h3>BBQ géant de l'association</h3>
+                    <p class="event-card-meta">Dimanche 12 juillet · à partir de 10h00 · Base de loisirs de Sesquières</p>
+                    <p class="event-card-desc">L'Association des Tchadiens d'Occitanie organise un barbecue géant à la base de loisirs de Sesquières. Venez nombreux partager un moment de convivialité, de fraternité et de plaisir !</p>
+                    <p class="event-card-tarifs">Tarif adhérent : 20 € · Tarif non-adhérent : 25 €</p>
+                    <p class="event-card-deadline">Inscription obligatoire avant le 10 juillet</p>
+                    <button class="btn-primary" id="open-registration">S'inscrire au BBQ</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Formulaire d'inscription (masqué par défaut) -->
+        <section class="registration-section" id="registration-section" hidden>
+            <div class="registration-box">
+                <button class="registration-close" id="close-registration" aria-label="Fermer le formulaire">✕</button>
+                <h2>S'inscrire — BBQ géant</h2>
+                <p class="registration-sub">Dimanche 12 juillet · Base de loisirs de Sesquières</p>
+
+                <form class="adhesion-form" id="registration-form" novalidate>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="insc-prenom">Prénom *</label>
+                            <input type="text" id="insc-prenom" name="prenom" required autocomplete="given-name">
+                        </div>
+                        <div class="form-group">
+                            <label for="insc-nom">Nom *</label>
+                            <input type="text" id="insc-nom" name="nom" required autocomplete="family-name">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="insc-email">Adresse e-mail *</label>
+                            <input type="email" id="insc-email" name="email" required autocomplete="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="insc-telephone">Téléphone *</label>
+                            <input type="tel" id="insc-telephone" name="telephone" required autocomplete="tel">
+                        </div>
+                    </div>
+
+                    <div class="form-group full">
+                        <label>Tarif *</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="tarif" value="adherent" required>
+                                Adhérent — 20 €
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="tarif" value="non-adherent" required>
+                                Non-adhérent — 25 €
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary form-submit" id="registration-submit-btn">Confirmer mon inscription</button>
+
+                    <p class="form-status" id="registration-status" role="status" aria-live="polite"></p>
+
+                </form>
+            </div>
+        </section>
+
+        <section class="past-section">
+            <h2 class="section-heading">Événements passés</h2>
+
+            <div class="event-gallery-block">
+                <div class="event-gallery-header">
+                    <h3>Forum des Langues à Toulouse</h3>
+                    <p class="event-gallery-date">24 mai 2026 — Place Saint-Sernin, Toulouse</p>
+                </div>
+                <div class="gallery-grid" data-gallery="forum-langues">
+                    <button class="gallery-item" data-src="image/Forum_langue.jpeg" data-alt="Bénévoles et membres de l'association tenant le drapeau du Tchad au Forum des Langues">
+                        <img src="image/Forum_langue.jpeg" alt="Bénévoles et membres de l'association tenant le drapeau du Tchad au Forum des Langues">
+                    </button>
+                    <div class="gallery-item placeholder" aria-hidden="true">
+                        <span>+ photo</span>
+                    </div>
+                    <div class="gallery-item placeholder" aria-hidden="true">
+                        <span>+ photo</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="event-gallery-block">
+                <div class="event-gallery-header">
+                    <h3>Journée culturelle tchadienne</h3>
+                    <p class="event-gallery-date">2 mai 2026 — Toulouse</p>
+                </div>
+                <div class="gallery-grid" data-gallery="journee-culturelle">
+                    <div class="gallery-item placeholder" aria-hidden="true">
+                        <span>+ photo</span>
+                    </div>
+                    <div class="gallery-item placeholder" aria-hidden="true">
+                        <span>+ photo</span>
+                    </div>
+                    <div class="gallery-item placeholder" aria-hidden="true">
+                        <span>+ photo</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="event-gallery-block">
+                <div class="event-gallery-header">
+                    <h3>Journée d'intégration des nouveaux étudiants</h3>
+                    <p class="event-gallery-date">26 octobre 2025 — Toulouse</p>
+                </div>
+                <div class="gallery-grid" data-gallery="journee-integration">
+                    <div class="gallery-item placeholder" aria-hidden="true">
+                        <span>+ photo</span>
+                    </div>
+                    <div class="gallery-item placeholder" aria-hidden="true">
+                        <span>+ photo</span>
+                    </div>
+                    <div class="gallery-item placeholder" aria-hidden="true">
+                        <span>+ photo</span>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo en grand format" hidden>
+        <button class="lightbox-close" id="lightbox-close" aria-label="Fermer">✕</button>
+        <button class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Photo précédente">‹</button>
+        <img src="" alt="" id="lightbox-img">
+        <button class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Photo suivante">›</button>
+    </div>
+
+    <footer>
+        <div class="footer-top">
+            <div class="footer-container">
+
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <img src="image/logo.jpeg" alt="Logo de l'Association des Tchadiens d'Occitanie">
+                        <span>ATO</span>
+                    </div>
+                    <p>
+                        Promouvoir la solidarité, la culture et l'entraide
+                        au sein de la communauté tchadienne en Occitanie.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><img src="image/Face.png" alt="Facebook"></a>
+                        <a href="#" aria-label="Instagram"><img src="image/insta.webp" alt="Instagram"></a>
+                        <a href="#" aria-label="WhatsApp"><img src="image/whats.jpg" alt="WhatsApp"></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Navigation</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="evenements.html">Événements</a></li>
+                        <li><a href="actualites.html">Actualités</a></li>
+                        <li><a href="activites.html">Activités</a></li>
+                        <li><a href="adhesion.html">Adhésion</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <ul class="footer-contact">
+                        <li>Toulouse, France</li>
+                        <li><a href="mailto:contact@ato.fr">contact@ato.fr</a></li>
+                        <li><a href="tel:+33000000000">+33 xx xx xx xx</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            © 2026 Association des Tchadiens d'Occitanie. Unité, Travail, Progrès.
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="evenements.js"></script>
+</body>
+</html>
