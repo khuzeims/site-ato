@@ -6,6 +6,13 @@ const app = express();
 
 app.use(express.json());
 
+// ROUTES API
+const evenementRoutes = require("./routes/evenementRoutes");
+app.use("/api/evenements", evenementRoutes);
+
+const actualiteRoutes = require("./routes/actualiteRoutes");
+app.use("/api/actualites", actualiteRoutes);
+
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("MongoDB connecté"))
     .catch(err => console.log(err));
