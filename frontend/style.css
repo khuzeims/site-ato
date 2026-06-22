@@ -219,7 +219,7 @@ main{
     position: relative;
     min-height: 700px;
 
-    background-image: url("image/arriere plan.png");
+    background-image: url("image/ar.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -250,17 +250,17 @@ main{
 }
 
 .hero-text h1{
-    font-size:clamp(2.4rem, 4.5vw, 3.6rem);
-    line-height:1.15;
-    margin-bottom:24px;
+    color: #10253a;
+    text-shadow:
+        0 2px 4px rgba(255,255,255,0.8),
+        0 4px 12px rgba(0,0,0,0.15);
 }
 
-.hero-text p{
-    font-size:1.1rem;
-    color:var(--texte-clair);
-    line-height:1.7;
-    max-width:480px;
-    margin-bottom:36px;
+
+.hero-text em{
+    color: #c45b2d;
+    text-shadow:
+        0 2px 4px rgba(255,255,255,0.8);
 }
 
 .hero-actions{
