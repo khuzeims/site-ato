@@ -503,6 +503,20 @@ main{
     gap:28px;
 }
 
+.news-loading,
+.news-error,
+.news-empty{
+    grid-column:1 / -1;
+    text-align:center;
+    padding:48px 24px;
+    color:var(--texte-clair);
+    font-size:1rem;
+}
+
+.news-error{
+    color:var(--terre-dark);
+}
+
 .news-card{
     background:var(--sable);
     border-radius:16px;

@@ -1,110 +1,236 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Gestion des actualités — Administration ATO</title>
-    <link rel="icon" type="image/jpeg" href="../image/logo.jpeg">
+// Gestion des actualités — protégé par authentification
+AdminAuth.requireLogin();
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400..600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+const API_URL_ACTUALITES = '/api/actualites';
 
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="admin.css">
-</head>
-<body class="admin-body">
+const newsTbody = document.getElementById('news-tbody');
+const logoutBtn = document.getElementById('logout-btn');
+const addNewsBtn = document.getElementById('add-news-btn');
 
-    <div class="admin-layout">
+const newsModal = document.getElementById('news-modal');
+const newsModalTitle = document.getElementById('news-modal-title');
+const newsModalClose = document.getElementById('news-modal-close');
+const newsForm = document.getElementById('news-form');
+const newsFormStatus = document.getElementById('news-form-status');
+const newsSubmitBtn = document.getElementById('news-submit-btn');
+const newsPhotoInput = document.getElementById('news-photo');
+const newsPhotoPreview = document.getElementById('news-photo-preview');
 
-        <aside class="admin-sidebar">
-            <div class="admin-sidebar-logo">
-                <img src="../image/logo.jpeg" alt="Logo de l'Association des Tchadiens d'Occitanie">
-                <span>ATO admin</span>
-            </div>
+logoutBtn.addEventListener('click', () => {
+    AdminAuth.logout();
+});
 
-            <nav class="admin-nav">
-                <a href="dashboard.html" class="admin-nav-link">Tableau de bord</a>
-                <a href="gestion-evenements.html" class="admin-nav-link">Événements</a>
-                <a href="gestion-actualites.html" class="admin-nav-link active">Actualités</a>
-            </nav>
+function formatDate(isoDate) {
+    if (!isoDate) return '—';
+    const [year, month, day] = isoDate.split('-');
+    return `${day}/${month}/${year}`;
+}
 
-            <button class="admin-logout" id="logout-btn">Se déconnecter</button>
-        </aside>
+function extraitTexte(contenu, longueur = 80) {
+    if (!contenu) return '—';
+    const texte = Array.isArray(contenu) ? contenu.join(' ') : contenu;
+    return texte.length > longueur ? texte.slice(0, longueur).trim() + '…' : texte;
+}
 
-        <main class="admin-main">
+// ----- CHARGEMENT DE LA LISTE -----
 
-            <header class="admin-header admin-header-row">
-                <div>
-                    <h1>Actualités</h1>
-                    <p>Ajoutez, modifiez ou supprimez les actualités de l'association.</p>
-                </div>
-                <button class="btn-primary" id="add-news-btn">+ Ajouter une actualité</button>
-            </header>
+async function chargerActualites() {
+    try {
+        const response = await fetch(API_URL_ACTUALITES, {
+            headers: AdminAuth.authHeaders()
+        });
 
-            <section class="admin-section">
-                <div class="admin-table-wrap">
-                    <table class="admin-table" id="news-table">
-                        <thead>
-                            <tr>
-                                <th>Photo</th>
-                                <th>Titre</th>
-                                <th>Date</th>
-                                <th>Extrait</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="news-tbody">
-                            <tr><td colspan="5" class="admin-table-loading">Chargement...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+        if (!response.ok) {
+            throw new Error('Réponse serveur incorrecte (' + response.status + ')');
+        }
 
-        </main>
-    </div>
+        const actualites = await response.json();
+        afficherActualites(actualites);
 
-    <!-- Modale d'ajout / modification d'actualité -->
-    <div class="admin-modal" id="news-modal" hidden>
-        <div class="admin-modal-box">
-            <button class="admin-modal-close" id="news-modal-close" aria-label="Fermer">✕</button>
-            <h2 id="news-modal-title">Ajouter une actualité</h2>
+    } catch (error) {
+        console.error('Erreur lors du chargement des actualités :', error);
+        newsTbody.innerHTML = `
+            <tr><td colspan="5" class="admin-table-error">
+                Impossible de charger les actualités. Le service est peut-être indisponible.
+            </td></tr>`;
+    }
+}
 
-            <form id="news-form" novalidate>
-                <input type="hidden" id="news-id">
+function afficherActualites(actualites) {
+    if (!actualites || actualites.length === 0) {
+        newsTbody.innerHTML = '<tr><td colspan="5" class="admin-table-empty">Aucune actualité pour le moment.</td></tr>';
+        return;
+    }
 
-                <div class="form-group full">
-                    <label for="news-titre">Titre *</label>
-                    <input type="text" id="news-titre" required>
-                </div>
+    newsTbody.innerHTML = actualites.map((n) => `
+        <tr data-id="${n._id}">
+            <td>
+                ${n.photo
+                    ? `<img src="${n.photo}" alt="${n.titre}" class="admin-table-thumb">`
+                    : '<span class="admin-table-nothumb">—</span>'}
+            </td>
+            <td>${n.titre}</td>
+            <td>${formatDate(n.datePublication)}</td>
+            <td class="admin-table-excerpt">${extraitTexte(n.contenu)}</td>
+            <td class="admin-actions">
+                <button class="admin-action-edit" data-id="${n._id}">Modifier</button>
+                <button class="admin-action-delete" data-id="${n._id}">Supprimer</button>
+            </td>
+        </tr>
+    `).join('');
 
-                <div class="form-group full">
-                    <label for="news-date">Date *</label>
-                    <input type="date" id="news-date" required>
-                </div>
+    document.querySelectorAll('.admin-action-edit').forEach((btn) => {
+        btn.addEventListener('click', () => ouvrirModaleEdition(btn.dataset.id, actualites));
+    });
 
-                <div class="form-group full">
-                    <label for="news-contenu">Contenu *</label>
-                    <textarea id="news-contenu" rows="6" required placeholder="Un paragraphe par ligne."></textarea>
-                    <p class="form-hint">Astuce : commencez un nouveau paragraphe à la ligne.</p>
-                </div>
+    document.querySelectorAll('.admin-action-delete').forEach((btn) => {
+        btn.addEventListener('click', () => supprimerActualite(btn.dataset.id));
+    });
+}
 
-                <div class="form-group full">
-                    <label for="news-photo">Photo de l'actualité</label>
-                    <input type="file" id="news-photo" accept="image/*">
-                    <p class="form-hint">Format JPG ou PNG, 2 Mo maximum.</p>
-                    <img id="news-photo-preview" class="admin-photo-preview" hidden alt="Aperçu de la photo">
-                </div>
+// ----- MODALE AJOUT / MODIFICATION -----
 
-                <button type="submit" class="btn-primary form-submit" id="news-submit-btn">Enregistrer</button>
+function ouvrirModaleAjout() {
+    newsForm.reset();
+    document.getElementById('news-id').value = '';
+    newsModalTitle.textContent = 'Ajouter une actualité';
+    newsPhotoPreview.hidden = true;
+    newsFormStatus.textContent = '';
+    newsFormStatus.className = 'form-status';
+    newsModal.hidden = false;
+}
 
-                <p class="form-status" id="news-form-status" role="status" aria-live="polite"></p>
-            </form>
-        </div>
-    </div>
+function ouvrirModaleEdition(id, actualites) {
+    const actualite = actualites.find((n) => n._id === id);
+    if (!actualite) return;
 
-    <script src="admin-auth.js"></script>
-    <script src="gestion-actualites.js"></script>
-</body>
-</html>
+    document.getElementById('news-id').value = actualite._id;
+    document.getElementById('news-titre').value = actualite.titre;
+    document.getElementById('news-date').value = actualite.datePublication;
+
+    const contenuTexte = Array.isArray(actualite.contenu)
+        ? actualite.contenu.join('\n')
+        : (actualite.contenu || '');
+    document.getElementById('news-contenu').value = contenuTexte;
+
+    if (actualite.photo) {
+        newsPhotoPreview.src = actualite.photo;
+        newsPhotoPreview.hidden = false;
+    } else {
+        newsPhotoPreview.hidden = true;
+    }
+
+    newsModalTitle.textContent = 'Modifier l\'actualité';
+    newsFormStatus.textContent = '';
+    newsFormStatus.className = 'form-status';
+    newsModal.hidden = false;
+}
+
+function fermerModale() {
+    newsModal.hidden = true;
+}
+
+addNewsBtn.addEventListener('click', ouvrirModaleAjout);
+newsModalClose.addEventListener('click', fermerModale);
+newsModal.addEventListener('click', (event) => {
+    if (event.target === newsModal) fermerModale();
+});
+
+newsPhotoInput.addEventListener('change', () => {
+    const file = newsPhotoInput.files[0];
+    if (file) {
+        newsPhotoPreview.src = URL.createObjectURL(file);
+        newsPhotoPreview.hidden = false;
+    }
+});
+
+// ----- ENVOI DU FORMULAIRE (ajout ou modification) -----
+
+newsForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    if (!newsForm.checkValidity()) {
+        newsFormStatus.textContent = 'Merci de remplir tous les champs obligatoires (*).';
+        newsFormStatus.className = 'form-status error';
+        return;
+    }
+
+    const id = document.getElementById('news-id').value;
+    const isEdition = !!id;
+
+    // Le contenu est découpé en paragraphes (un par ligne non vide)
+    const contenuLignes = document.getElementById('news-contenu').value
+        .split('\n')
+        .map((ligne) => ligne.trim())
+        .filter((ligne) => ligne.length > 0);
+
+    // FormData utilisé car on envoie potentiellement un fichier (photo)
+    const formData = new FormData();
+    formData.append('titre', document.getElementById('news-titre').value.trim());
+    formData.append('datePublication', document.getElementById('news-date').value);
+    formData.append('contenu', JSON.stringify(contenuLignes));
+
+    const photoFile = newsPhotoInput.files[0];
+    if (photoFile) {
+        formData.append('photo', photoFile);
+    }
+
+    newsSubmitBtn.disabled = true;
+    newsSubmitBtn.textContent = 'Enregistrement...';
+    newsFormStatus.textContent = '';
+    newsFormStatus.className = 'form-status';
+
+    try {
+        const url = isEdition ? `${API_URL_ACTUALITES}/${id}` : API_URL_ACTUALITES;
+        const method = isEdition ? 'PUT' : 'POST';
+
+        const response = await fetch(url, {
+            method,
+            headers: AdminAuth.authHeaders(), // pas de Content-Type : FormData le définit automatiquement
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error('Réponse serveur incorrecte (' + response.status + ')');
+        }
+
+        fermerModale();
+        chargerActualites();
+
+    } catch (error) {
+        console.error('Erreur lors de l\'enregistrement de l\'actualité :', error);
+        newsFormStatus.textContent = 'Le service est momentanément indisponible. Merci de réessayer plus tard.';
+        newsFormStatus.className = 'form-status error';
+    } finally {
+        newsSubmitBtn.disabled = false;
+        newsSubmitBtn.textContent = 'Enregistrer';
+    }
+});
+
+// ----- SUPPRESSION -----
+
+async function supprimerActualite(id) {
+    if (!confirm('Voulez-vous vraiment supprimer cette actualité ? Cette action est irréversible.')) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL_ACTUALITES}/${id}`, {
+            method: 'DELETE',
+            headers: AdminAuth.authHeaders()
+        });
+
+        if (!response.ok) {
+            throw new Error('Réponse serveur incorrecte (' + response.status + ')');
+        }
+
+        chargerActualites();
+
+    } catch (error) {
+        console.error('Erreur lors de la suppression :', error);
+        alert('La suppression a échoué. Merci de réessayer.');
+    }
+}
+
+// Chargement initial
+chargerActualites();

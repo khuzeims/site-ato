@@ -34,8 +34,8 @@ exports.createEvenement = async (req, res) => {
             date,
             lieu,
             placesDisponibles,
-            statut
-            // la photo sera ajoutée à l'étape 5 (multer)
+            statut,
+            photo: req.file ? "uploads/" + req.file.filename : null
         });
 
         const evenementEnregistre = await nouvelEvenement.save();
@@ -48,9 +48,16 @@ exports.createEvenement = async (req, res) => {
 // PUT /api/evenements/:id — modifier un événement
 exports.updateEvenement = async (req, res) => {
     try {
+        const updateData = { ...req.body };
+
+        // Si une nouvelle photo est envoyée, on remplace l'ancienne référence
+        if (req.file) {
+            updateData.photo = "uploads/" + req.file.filename;
+        }
+
         const evenementModifie = await Evenement.findByIdAndUpdate(
             req.params.id,
-            req.body,
+            updateData,
             { new: true, runValidators: true }
         );
 

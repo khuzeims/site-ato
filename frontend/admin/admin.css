@@ -160,6 +160,16 @@
     overflow-x:auto;
 }
 
+/* Neutralise les styles de la balise <header> du site public
+   (position:fixed, z-index, etc.) qui s'appliqueraient sinon ici aussi */
+.admin-body header{
+    position:static;
+    width:auto;
+    background:none;
+    backdrop-filter:none;
+    border-bottom:none;
+}
+
 .admin-header{
     margin-bottom:36px;
 }

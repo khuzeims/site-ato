@@ -34,8 +34,8 @@ exports.createActualite = async (req, res) => {
         const nouvelleActualite = new Actualite({
             titre,
             datePublication,
-            contenu: contenuParsed
-            // la photo sera ajoutée à l'étape multer
+            contenu: contenuParsed,
+            photo: req.file ? "uploads/" + req.file.filename : null
         });
 
         const actualiteEnregistree = await nouvelleActualite.save();
@@ -52,6 +52,10 @@ exports.updateActualite = async (req, res) => {
 
         if (typeof updateData.contenu === "string") {
             updateData.contenu = JSON.parse(updateData.contenu);
+        }
+
+        if (req.file) {
+            updateData.photo = "uploads/" + req.file.filename;
         }
 
         const actualiteModifiee = await Actualite.findByIdAndUpdate(
