@@ -18,7 +18,11 @@ html{
     scroll-behavior:smooth;
 }
 
-
+body{
+    font-family:'Inter',sans-serif;
+    background:var(--creme);
+    color:var(--nuit);
+}
 
 h1,h2,h3{
     font-family:'Fraunces',serif;
@@ -214,39 +218,14 @@ main{
     padding-top:82px;
 }
 
-/* Arrière-plan hero avec photo */
-.hero-bg {
-    position: relative;
-    min-height: 700px;
-
-    background-image: url("image/arriere plan.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.hero-bg::before {
-    content:"";
-    position:absolute;
-    inset:0;
-    background:rgba(255,255,255,0.35);
-}
-
-.hero-bg .hero {
-    position: relative;
-    z-index: 1;
-}
-
-
-
-.hero {
-    max-width: 1240px;
-    margin: 0 auto;
-    padding: 72px 32px 96px;
-    display: grid;
-    grid-template-columns: 1fr 0.9fr;
-    gap: 64px;
-    align-items: center;
+.hero{
+    max-width:1240px;
+    margin:0 auto;
+    padding:72px 32px 96px;
+    display:grid;
+    grid-template-columns:1fr 0.9fr;
+    gap:64px;
+    align-items:center;
 }
 
 .hero-text h1{
@@ -828,6 +807,22 @@ main{
 .event-card-upcoming{
     background:var(--sable);
     border-radius:18px;
+    overflow:hidden;
+}
+
+.event-card-photo{
+    width:100%;
+    height:280px;
+}
+
+.event-card-photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.event-card-info{
     padding:40px;
 }
 

@@ -135,6 +135,9 @@ function afficherEvenementsAVenir(evenements) {
 
     upcomingContainer.innerHTML = evenements.map((evenement) => `
         <div class="event-card-upcoming">
+            ${evenement.photo
+                ? `<div class="event-card-photo"><img src="${evenement.photo}" alt="${evenement.titre}"></div>`
+                : ''}
             <div class="event-card-info">
                 <span class="event-status-badge">À venir</span>
                 <h3>${evenement.titre}</h3>
