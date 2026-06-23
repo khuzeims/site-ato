@@ -35,7 +35,7 @@ exports.createEvenement = async (req, res) => {
             lieu,
             placesDisponibles,
             statut,
-            photo: req.file ? "uploads/" + req.file.filename : null
+            photos: req.files ? req.files.map((f) => "uploads/" + f.filename) : []
         });
 
         const evenementEnregistre = await nouvelEvenement.save();
@@ -50,9 +50,12 @@ exports.updateEvenement = async (req, res) => {
     try {
         const updateData = { ...req.body };
 
-        // Si une nouvelle photo est envoyée, on remplace l'ancienne référence
-        if (req.file) {
-            updateData.photo = "uploads/" + req.file.filename;
+        // Si de nouvelles photos sont envoyées, on les AJOUTE à la galerie existante
+        if (req.files && req.files.length > 0) {
+            const evenementActuel = await Evenement.findById(req.params.id);
+            const photosExistantes = evenementActuel ? evenementActuel.photos : [];
+            const nouvellesPhotos = req.files.map((f) => "uploads/" + f.filename);
+            updateData.photos = [...photosExistantes, ...nouvellesPhotos];
         }
 
         const evenementModifie = await Evenement.findByIdAndUpdate(

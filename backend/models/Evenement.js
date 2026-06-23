@@ -29,9 +29,9 @@ const evenementSchema = new mongoose.Schema({
         enum: ["à venir", "passé", "annulé"],
         default: "à venir"
     },
-    photo: {
-        type: String, // chemin ou URL vers l'image uploadée
-        default: null
+    photos: {
+        type: [String], // chemins ou URLs vers les images uploadées (galerie)
+        default: []
     }
 }, {
     timestamps: true // ajoute createdAt et updatedAt automatiquement

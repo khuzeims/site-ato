@@ -113,10 +113,10 @@
                 </div>
 
                 <div class="form-group full">
-                    <label for="event-photo">Photo de l'événement</label>
-                    <input type="file" id="event-photo" accept="image/*">
-                    <p class="form-hint">Format JPG ou PNG, 2 Mo maximum.</p>
-                    <img id="event-photo-preview" class="admin-photo-preview" hidden alt="Aperçu de la photo">
+                    <label for="event-photos">Photos de l'événement (galerie)</label>
+                    <input type="file" id="event-photos" accept="image/*" multiple>
+                    <p class="form-hint">Format JPG ou PNG, 2 Mo maximum par photo. Vous pouvez sélectionner plusieurs photos à la fois.</p>
+                    <div id="event-photos-preview" class="admin-photos-preview"></div>
                 </div>
 
                 <button type="submit" class="btn-primary form-submit" id="event-submit-btn">Enregistrer</button>

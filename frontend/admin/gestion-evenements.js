@@ -13,8 +13,8 @@ const eventModalClose = document.getElementById('event-modal-close');
 const eventForm = document.getElementById('event-form');
 const eventFormStatus = document.getElementById('event-form-status');
 const eventSubmitBtn = document.getElementById('event-submit-btn');
-const eventPhotoInput = document.getElementById('event-photo');
-const eventPhotoPreview = document.getElementById('event-photo-preview');
+const eventPhotosInput = document.getElementById('event-photos');
+const eventPhotosPreview = document.getElementById('event-photos-preview');
 
 logoutBtn.addEventListener('click', () => {
     AdminAuth.logout();
@@ -59,8 +59,8 @@ function afficherEvenements(evenements) {
     eventsTbody.innerHTML = evenements.map((e) => `
         <tr data-id="${e._id}">
             <td>
-                ${e.photo
-                    ? `<img src="${e.photo}" alt="${e.titre}" class="admin-table-thumb">`
+                ${e.photos && e.photos.length > 0
+                    ? `<img src="${e.photos[0]}" alt="${e.titre}" class="admin-table-thumb">`
                     : '<span class="admin-table-nothumb">—</span>'}
             </td>
             <td>${e.titre}</td>
@@ -90,7 +90,7 @@ function ouvrirModaleAjout() {
     eventForm.reset();
     document.getElementById('event-id').value = '';
     eventModalTitle.textContent = 'Ajouter un événement';
-    eventPhotoPreview.hidden = true;
+    eventPhotosPreview.innerHTML = '';
     eventFormStatus.textContent = '';
     eventFormStatus.className = 'form-status';
     eventModal.hidden = false;
@@ -108,11 +108,12 @@ function ouvrirModaleEdition(id, evenements) {
     document.getElementById('event-places').value = evenement.placesDisponibles;
     document.getElementById('event-statut').value = evenement.statut;
 
-    if (evenement.photo) {
-        eventPhotoPreview.src = evenement.photo;
-        eventPhotoPreview.hidden = false;
+    if (evenement.photos && evenement.photos.length > 0) {
+        eventPhotosPreview.innerHTML = evenement.photos.map((src) =>
+            `<img src="${src}" alt="" class="admin-photo-thumb">`
+        ).join('');
     } else {
-        eventPhotoPreview.hidden = true;
+        eventPhotosPreview.innerHTML = '';
     }
 
     eventModalTitle.textContent = 'Modifier l\'événement';
@@ -131,11 +132,12 @@ eventModal.addEventListener('click', (event) => {
     if (event.target === eventModal) fermerModale();
 });
 
-eventPhotoInput.addEventListener('change', () => {
-    const file = eventPhotoInput.files[0];
-    if (file) {
-        eventPhotoPreview.src = URL.createObjectURL(file);
-        eventPhotoPreview.hidden = false;
+eventPhotosInput.addEventListener('change', () => {
+    const files = Array.from(eventPhotosInput.files);
+    if (files.length > 0) {
+        eventPhotosPreview.innerHTML = files.map((file) =>
+            `<img src="${URL.createObjectURL(file)}" alt="" class="admin-photo-thumb">`
+        ).join('');
     }
 });
 
@@ -162,10 +164,10 @@ eventForm.addEventListener('submit', async (event) => {
     formData.append('placesDisponibles', document.getElementById('event-places').value);
     formData.append('statut', document.getElementById('event-statut').value);
 
-    const photoFile = eventPhotoInput.files[0];
-    if (photoFile) {
-        formData.append('photo', photoFile);
-    }
+    const photoFiles = Array.from(eventPhotosInput.files);
+    photoFiles.forEach((file) => {
+        formData.append('photos', file);
+    });
 
     eventSubmitBtn.disabled = true;
     eventSubmitBtn.textContent = 'Enregistrement...';

@@ -8,22 +8,8 @@ const lightboxNext = document.getElementById('lightbox-next');
 let currentGallery = [];
 let currentIndex = 0;
 
-function buildGalleries() {
-    const galleries = {};
-    document.querySelectorAll('.gallery-grid').forEach((grid) => {
-        const name = grid.dataset.gallery;
-        const items = Array.from(grid.querySelectorAll('.gallery-item[data-src]'));
-        galleries[name] = items.map((item) => ({
-            src: item.dataset.src,
-            alt: item.dataset.alt || ''
-        }));
-    });
-    return galleries;
-}
-
-function openLightbox(galleryName, index) {
-    const galleries = buildGalleries();
-    currentGallery = galleries[galleryName] || [];
+function openLightbox(photos, index) {
+    currentGallery = photos;
     currentIndex = index;
     if (currentGallery.length === 0) return;
 
@@ -33,9 +19,9 @@ function openLightbox(galleryName, index) {
 }
 
 function showImage() {
-    const photo = currentGallery[currentIndex];
-    lightboxImg.src = photo.src;
-    lightboxImg.alt = photo.alt;
+    const src = currentGallery[currentIndex];
+    lightboxImg.src = src;
+    lightboxImg.alt = '';
 
     const multiple = currentGallery.length > 1;
     lightboxPrev.style.display = multiple ? 'flex' : 'none';
@@ -58,14 +44,19 @@ function showPrev() {
     showImage();
 }
 
-document.querySelectorAll('.gallery-grid').forEach((grid) => {
-    const galleryName = grid.dataset.gallery;
-    const buttons = Array.from(grid.querySelectorAll('.gallery-item[data-src]'));
+// Attache les écouteurs de clic sur les galeries présentes dans le DOM à ce moment.
+// À appeler après avoir injecté dynamiquement le contenu des galeries.
+function attacherEcouteursGaleries() {
+    document.querySelectorAll('.gallery-grid').forEach((grid) => {
+        const photos = JSON.parse(grid.dataset.photos || '[]');
+        const buttons = Array.from(grid.querySelectorAll('.gallery-item[data-index]'));
 
-    buttons.forEach((button, index) => {
-        button.addEventListener('click', () => openLightbox(galleryName, index));
+        buttons.forEach((button) => {
+            const index = parseInt(button.dataset.index, 10);
+            button.addEventListener('click', () => openLightbox(photos, index));
+        });
     });
-});
+}
 
 lightboxClose.addEventListener('click', closeLightbox);
 lightboxNext.addEventListener('click', showNext);
@@ -135,8 +126,8 @@ function afficherEvenementsAVenir(evenements) {
 
     upcomingContainer.innerHTML = evenements.map((evenement) => `
         <div class="event-card-upcoming">
-            ${evenement.photo
-                ? `<div class="event-card-photo"><img src="${evenement.photo}" alt="${evenement.titre}"></div>`
+            ${evenement.photos && evenement.photos.length > 0
+                ? `<div class="event-card-photo"><img src="${evenement.photos[0]}" alt="${evenement.titre}"></div>`
                 : ''}
             <div class="event-card-info">
                 <span class="event-status-badge">À venir</span>
@@ -224,4 +215,66 @@ if (registrationForm) {
     });
 }
 
+// Chargement et affichage des événements passés (galeries photo)
+const pastContainer = document.getElementById('past-container');
+
+function formatDateCourte(isoDate) {
+    if (!isoDate) return '';
+    const date = new Date(isoDate);
+    return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+async function chargerEvenementsPasses() {
+    try {
+        const response = await fetch(API_URL_EVENEMENTS);
+
+        if (!response.ok) {
+            throw new Error('Réponse serveur incorrecte (' + response.status + ')');
+        }
+
+        const evenements = await response.json();
+        const passes = evenements.filter((e) => e.statut === 'passé');
+
+        afficherEvenementsPasses(passes);
+
+    } catch (error) {
+        console.error('Erreur lors du chargement des événements passés :', error);
+        pastContainer.innerHTML = '<p class="news-error">Impossible de charger les événements passés pour le moment.</p>';
+    }
+}
+
+function afficherEvenementsPasses(evenements) {
+    if (!evenements || evenements.length === 0) {
+        pastContainer.innerHTML = '<p class="news-empty">Aucun événement passé à afficher pour le moment.</p>';
+        return;
+    }
+
+    pastContainer.innerHTML = evenements.map((evenement) => {
+        const photos = evenement.photos || [];
+
+        const galleryHtml = photos.length > 0
+            ? photos.map((src, index) => `
+                <button class="gallery-item" data-index="${index}">
+                    <img src="${src}" alt="${evenement.titre}">
+                </button>
+              `).join('')
+            : '<p class="news-empty">Aucune photo disponible pour cet événement.</p>';
+
+        return `
+            <div class="event-gallery-block">
+                <div class="event-gallery-header">
+                    <h3>${evenement.titre}</h3>
+                    <p class="event-gallery-date">${formatDateCourte(evenement.date)} — ${evenement.lieu}</p>
+                </div>
+                <div class="gallery-grid" data-photos='${JSON.stringify(photos)}'>
+                    ${galleryHtml}
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    attacherEcouteursGaleries();
+}
+
 chargerEvenementsAVenir();
+chargerEvenementsPasses();
