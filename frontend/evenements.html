@@ -55,16 +55,8 @@
         <section class="upcoming-section">
             <h2 class="section-heading">À venir</h2>
 
-            <div class="event-card-upcoming">
-                <div class="event-card-info">
-                    <span class="event-status-badge">À venir</span>
-                    <h3>BBQ géant de l'association</h3>
-                    <p class="event-card-meta">Dimanche 12 juillet · à partir de 10h00 · Base de loisirs de Sesquières</p>
-                    <p class="event-card-desc">L'Association des Tchadiens d'Occitanie organise un barbecue géant à la base de loisirs de Sesquières. Venez nombreux partager un moment de convivialité, de fraternité et de plaisir !</p>
-                    <p class="event-card-tarifs">Tarif adhérent : 20 € · Tarif non-adhérent : 25 €</p>
-                    <p class="event-card-deadline">Inscription obligatoire avant le 10 juillet</p>
-                    <button class="btn-primary" id="open-registration">S'inscrire au BBQ</button>
-                </div>
+            <div id="upcoming-container">
+                <p class="news-loading">Chargement des événements à venir...</p>
             </div>
         </section>
 
@@ -72,10 +64,11 @@
         <section class="registration-section" id="registration-section" hidden>
             <div class="registration-box">
                 <button class="registration-close" id="close-registration" aria-label="Fermer le formulaire">✕</button>
-                <h2>S'inscrire — BBQ géant</h2>
-                <p class="registration-sub">Dimanche 12 juillet · Base de loisirs de Sesquières</p>
+                <h2 id="registration-title">S'inscrire</h2>
+                <p class="registration-sub" id="registration-sub"></p>
 
                 <form class="adhesion-form" id="registration-form" novalidate>
+                    <input type="hidden" id="registration-evenement-id">
 
                     <div class="form-row">
                         <div class="form-group">

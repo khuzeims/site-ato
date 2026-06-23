@@ -84,23 +84,81 @@ document.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowLeft') showPrev();
 });
 
-// Formulaire d'inscription à l'événement
-const openRegistrationBtn = document.getElementById('open-registration');
-const closeRegistrationBtn = document.getElementById('close-registration');
+// Chargement et affichage des événements à venir
+const API_URL_EVENEMENTS = '/api/evenements';
+const API_URL_INSCRIPTIONS = '/api/inscriptions';
+
+const upcomingContainer = document.getElementById('upcoming-container');
 const registrationSection = document.getElementById('registration-section');
+const registrationTitle = document.getElementById('registration-title');
+const registrationSub = document.getElementById('registration-sub');
+const registrationEvenementId = document.getElementById('registration-evenement-id');
+const closeRegistrationBtn = document.getElementById('close-registration');
 const registrationForm = document.getElementById('registration-form');
 const registrationStatus = document.getElementById('registration-status');
 const registrationSubmitBtn = document.getElementById('registration-submit-btn');
 
-// Identifiant de l'événement (collection "evenement")
-const EVENEMENT_ID = "6a310dab16f54263992b97dc"; // BBQ géant — à remplacer par l'ID réel renvoyé par l'API
-const API_URL_INSCRIPTIONS = '/api/inscriptions';
+function formatDateLongue(isoDate) {
+    if (!isoDate) return '';
+    const date = new Date(isoDate);
+    return date.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+}
 
-if (openRegistrationBtn && registrationSection) {
-    openRegistrationBtn.addEventListener('click', () => {
-        registrationSection.hidden = false;
-        registrationSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+async function chargerEvenementsAVenir() {
+    try {
+        const response = await fetch(API_URL_EVENEMENTS);
+
+        if (!response.ok) {
+            throw new Error('Réponse serveur incorrecte (' + response.status + ')');
+        }
+
+        const evenements = await response.json();
+        const aVenir = evenements.filter((e) => e.statut === 'à venir');
+
+        afficherEvenementsAVenir(aVenir);
+
+    } catch (error) {
+        console.error('Erreur lors du chargement des événements :', error);
+        upcomingContainer.innerHTML = '<p class="news-error">Impossible de charger les événements pour le moment. Merci de réessayer plus tard.</p>';
+    }
+}
+
+function afficherEvenementsAVenir(evenements) {
+    if (!evenements || evenements.length === 0) {
+        upcomingContainer.innerHTML = `
+            <div class="empty-state">
+                <p>Aucun événement n'est programmé pour le moment.</p>
+                <p class="empty-state-sub">Revenez bientôt, ou suivez-nous sur les réseaux sociaux pour ne rien manquer.</p>
+            </div>`;
+        return;
+    }
+
+    upcomingContainer.innerHTML = evenements.map((evenement) => `
+        <div class="event-card-upcoming">
+            <div class="event-card-info">
+                <span class="event-status-badge">À venir</span>
+                <h3>${evenement.titre}</h3>
+                <p class="event-card-meta">${formatDateLongue(evenement.date)} · ${evenement.lieu}</p>
+                <p class="event-card-desc">${evenement.description}</p>
+                <p class="event-card-places">${evenement.placesDisponibles} places disponibles</p>
+                <button class="btn-primary open-registration" data-id="${evenement._id}" data-titre="${evenement.titre}" data-date="${formatDateLongue(evenement.date)}" data-lieu="${evenement.lieu}">S'inscrire</button>
+            </div>
+        </div>
+    `).join('');
+
+    document.querySelectorAll('.open-registration').forEach((btn) => {
+        btn.addEventListener('click', () => ouvrirFormulaireInscription(btn.dataset));
     });
+}
+
+function ouvrirFormulaireInscription(data) {
+    registrationEvenementId.value = data.id;
+    registrationTitle.textContent = 'S\'inscrire — ' + data.titre;
+    registrationSub.textContent = data.date + ' · ' + data.lieu;
+    registrationStatus.textContent = '';
+    registrationStatus.className = 'form-status';
+    registrationSection.hidden = false;
+    registrationSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 if (closeRegistrationBtn && registrationSection) {
@@ -123,7 +181,7 @@ if (registrationForm) {
 
         // Payload conforme au schéma MongoDB de la collection "inscription"
         const payload = {
-            evenementId: EVENEMENT_ID,
+            evenementId: registrationEvenementId.value,
             nom: document.getElementById('insc-nom').value.trim(),
             prenom: document.getElementById('insc-prenom').value.trim(),
             email: document.getElementById('insc-email').value.trim(),
@@ -162,3 +220,5 @@ if (registrationForm) {
         }
     });
 }
+
+chargerEvenementsAVenir();
