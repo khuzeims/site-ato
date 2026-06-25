@@ -29,7 +29,7 @@ function filtrerFichiers(req, file, cb) {
 const upload = multer({
     storage: storage,
     fileFilter: filtrerFichiers,
-    limits: { fileSize: 2 * 1024 * 1024 } // 2 Mo maximum, cohérent avec ce qu'annonce le formulaire admin
+    limits: { fileSize: 10 * 1024 * 1024 } // 10 Mo maximum par photo
 });
 
 module.exports = upload;
