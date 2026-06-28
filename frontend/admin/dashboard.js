@@ -36,7 +36,7 @@ async function chargerAdhesions() {
     } catch (error) {
         console.error('Erreur lors du chargement des adhésions :', error);
         adhesionsTbody.innerHTML = `
-            <tr><td colspan="7" class="admin-table-error">
+            <tr><td colspan="8" class="admin-table-error">
                 Impossible de charger les demandes d'adhésion. Le service est peut-être indisponible.
             </td></tr>`;
     }
@@ -44,7 +44,7 @@ async function chargerAdhesions() {
 
 function afficherAdhesions(adhesions) {
     if (!adhesions || adhesions.length === 0) {
-        adhesionsTbody.innerHTML = '<tr><td colspan="7" class="admin-table-empty">Aucune demande d\'adhésion pour le moment.</td></tr>';
+        adhesionsTbody.innerHTML = '<tr><td colspan="8" class="admin-table-empty">Aucune demande d\'adhésion pour le moment.</td></tr>';
         return;
     }
 
@@ -63,6 +63,9 @@ function afficherAdhesions(adhesions) {
                     <option value="refusé" ${a.statut === 'refusé' ? 'selected' : ''}>Refusé</option>
                 </select>
             </td>
+            <td>
+                <button class="admin-action-delete" data-id="${a._id}" data-type="adhesion">Supprimer</button>
+            </td>
         </tr>
     `).join('');
 
@@ -71,6 +74,33 @@ function afficherAdhesions(adhesions) {
             mettreAJourStatutAdhesion(event.target.dataset.id, event.target.value);
         });
     });
+
+    document.querySelectorAll('.admin-action-delete[data-type="adhesion"]').forEach((btn) => {
+        btn.addEventListener('click', () => supprimerAdhesion(btn.dataset.id));
+    });
+}
+
+async function supprimerAdhesion(id) {
+    if (!confirm('Voulez-vous vraiment supprimer cette demande d\'adhésion ? Cette action est irréversible.')) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL_ADHESIONS}/${id}`, {
+            method: 'DELETE',
+            headers: AdminAuth.authHeaders()
+        });
+
+        if (!response.ok) {
+            throw new Error('Échec de la suppression (' + response.status + ')');
+        }
+
+        chargerAdhesions();
+
+    } catch (error) {
+        console.error('Erreur lors de la suppression :', error);
+        alert('La suppression a échoué. Merci de réessayer.');
+    }
 }
 
 async function mettreAJourStatutAdhesion(id, nouveauStatut) {
@@ -112,7 +142,7 @@ async function chargerInscriptions() {
     } catch (error) {
         console.error('Erreur lors du chargement des inscriptions :', error);
         inscriptionsTbody.innerHTML = `
-            <tr><td colspan="7" class="admin-table-error">
+            <tr><td colspan="8" class="admin-table-error">
                 Impossible de charger les inscriptions. Le service est peut-être indisponible.
             </td></tr>`;
     }
@@ -120,12 +150,12 @@ async function chargerInscriptions() {
 
 function afficherInscriptions(inscriptions) {
     if (!inscriptions || inscriptions.length === 0) {
-        inscriptionsTbody.innerHTML = '<tr><td colspan="7" class="admin-table-empty">Aucune inscription pour le moment.</td></tr>';
+        inscriptionsTbody.innerHTML = '<tr><td colspan="8" class="admin-table-empty">Aucune inscription pour le moment.</td></tr>';
         return;
     }
 
     inscriptionsTbody.innerHTML = inscriptions.map((i) => `
-        <tr>
+        <tr data-id="${i._id}">
             <td>${i.evenementTitre || i.evenementId}</td>
             <td>${i.nom}</td>
             <td>${i.prenom}</td>
@@ -133,8 +163,38 @@ function afficherInscriptions(inscriptions) {
             <td>${i.telephone}</td>
             <td>${i.tarif === 'adherent' ? 'Adhérent (20 €)' : 'Non-adhérent (25 €)'}</td>
             <td>${formatDate(i.dateInscription)}</td>
+            <td>
+                <button class="admin-action-delete" data-id="${i._id}" data-type="inscription">Supprimer</button>
+            </td>
         </tr>
     `).join('');
+
+    document.querySelectorAll('.admin-action-delete[data-type="inscription"]').forEach((btn) => {
+        btn.addEventListener('click', () => supprimerInscription(btn.dataset.id));
+    });
+}
+
+async function supprimerInscription(id) {
+    if (!confirm('Voulez-vous vraiment supprimer cette inscription ? Cette action est irréversible.')) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL_INSCRIPTIONS}/${id}`, {
+            method: 'DELETE',
+            headers: AdminAuth.authHeaders()
+        });
+
+        if (!response.ok) {
+            throw new Error('Échec de la suppression (' + response.status + ')');
+        }
+
+        chargerInscriptions();
+
+    } catch (error) {
+        console.error('Erreur lors de la suppression :', error);
+        alert('La suppression a échoué. Merci de réessayer.');
+    }
 }
 
 // Chargement initial
