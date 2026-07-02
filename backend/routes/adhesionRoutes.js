@@ -2,9 +2,10 @@ const express = require("express");
 const router = express.Router();
 const adhesionController = require("../controllers/adhesionController");
 const verifierToken = require("../middleware/verifierToken");
+const verifierCaptcha = require("../middleware/verifierCaptcha");
 
-// Route publique : n'importe qui peut soumettre une demande d'adhésion
-router.post("/", adhesionController.createAdhesion);
+// Route publique : n'importe qui peut soumettre une demande d'adhésion (protégée par captcha)
+router.post("/", verifierCaptcha, adhesionController.createAdhesion);
 
 // Routes protégées (réservées à l'admin connecté, données personnelles)
 router.get("/", verifierToken, adhesionController.getAllAdhesions);

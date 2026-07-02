@@ -24,6 +24,7 @@ exports.getAdhesionById = async (req, res) => {
 };
 
 // POST /api/adhesions — créer une demande d'adhésion (formulaire public du site)
+// Le captcha est déjà vérifié en amont par le middleware verifierCaptcha (voir adhesionRoutes.js)
 exports.createAdhesion = async (req, res) => {
     try {
         const { nom, prenom, email, telephone, adresse, dateDemande } = req.body;

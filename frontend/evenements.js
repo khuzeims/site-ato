@@ -171,6 +171,13 @@ if (registrationForm) {
             return;
         }
 
+        const captchaToken = grecaptcha.getResponse();
+        if (!captchaToken) {
+            registrationStatus.textContent = 'Merci de valider le captcha avant d\'envoyer le formulaire.';
+            registrationStatus.className = 'form-status error';
+            return;
+        }
+
         const tarifChoisi = registrationForm.querySelector('input[name="tarif"]:checked').value;
 
         // Payload conforme au schéma MongoDB de la collection "inscription"
@@ -181,7 +188,8 @@ if (registrationForm) {
             email: document.getElementById('insc-email').value.trim(),
             telephone: document.getElementById('insc-telephone').value.trim(),
             tarif: tarifChoisi,
-            dateInscription: new Date().toISOString().slice(0, 10)
+            dateInscription: new Date().toISOString().slice(0, 10),
+            captchaToken: captchaToken
         };
 
         registrationSubmitBtn.disabled = true;
@@ -196,17 +204,20 @@ if (registrationForm) {
                 body: JSON.stringify(payload)
             });
 
+            const data = await response.json().catch(() => ({}));
+
             if (!response.ok) {
-                throw new Error('Réponse du serveur incorrecte (' + response.status + ')');
+                throw new Error(data.message || ('Réponse du serveur incorrecte (' + response.status + ')'));
             }
 
             registrationStatus.textContent = 'Votre inscription est confirmée. Merci et à bientôt !';
             registrationStatus.className = 'form-status success';
             registrationForm.reset();
+            grecaptcha.reset();
 
         } catch (error) {
             console.error('Erreur lors de l\'inscription :', error);
-            registrationStatus.textContent = 'Le service est momentanément indisponible. Merci de réessayer plus tard ou de contacter un membre du bureau exécutif.';
+            registrationStatus.textContent = error.message || 'Le service est momentanément indisponible. Merci de réessayer plus tard ou de contacter un membre du bureau exécutif.';
             registrationStatus.className = 'form-status error';
         } finally {
             registrationSubmitBtn.disabled = false;

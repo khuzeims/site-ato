@@ -16,8 +16,15 @@ if (adhesionForm) {
             return;
         }
 
+        const captchaToken = grecaptcha.getResponse();
+        if (!captchaToken) {
+            formStatus.textContent = 'Merci de valider le captcha avant d\'envoyer le formulaire.';
+            formStatus.className = 'form-status error';
+            return;
+        }
+
         // Construction de l'objet envoyé à l'API, conforme au schéma MongoDB :
-        // { nom, prenom, email, telephone, adresse, statut, dateDemande }
+        // { nom, prenom, email, telephone, adresse, statut, dateDemande, captchaToken }
         const payload = {
             nom: document.getElementById('nom').value.trim(),
             prenom: document.getElementById('prenom').value.trim(),
@@ -25,7 +32,8 @@ if (adhesionForm) {
             telephone: document.getElementById('telephone').value.trim(),
             adresse: document.getElementById('adresse').value.trim(),
             statut: "en attente",
-            dateDemande: new Date().toISOString().slice(0, 10) // format "AAAA-MM-JJ"
+            dateDemande: new Date().toISOString().slice(0, 10), // format "AAAA-MM-JJ"
+            captchaToken: captchaToken
         };
 
         submitBtn.disabled = true;
@@ -40,18 +48,22 @@ if (adhesionForm) {
                 body: JSON.stringify(payload)
             });
 
+            const data = await response.json().catch(() => ({}));
+
             if (!response.ok) {
-                throw new Error('Réponse du serveur incorrecte (' + response.status + ')');
+                // On affiche le message précis renvoyé par le serveur (ex: captcha invalide),
+                // plutôt qu'un message générique qui masquerait la vraie cause.
+                throw new Error(data.message || ('Réponse du serveur incorrecte (' + response.status + ')'));
             }
 
             formStatus.textContent = 'Votre demande a bien été envoyée. Nous reviendrons vers vous rapidement.';
             formStatus.className = 'form-status success';
             adhesionForm.reset();
+            grecaptcha.reset();
 
         } catch (error) {
-            // Le backend n'est pas encore disponible, ou une erreur réseau est survenue.
             console.error('Erreur lors de l\'envoi du formulaire :', error);
-            formStatus.textContent = 'Le service est momentanément indisponible. Merci de réessayer plus tard ou de nous contacter directement par e-mail.';
+            formStatus.textContent = error.message || 'Le service est momentanément indisponible. Merci de réessayer plus tard ou de nous contacter directement par e-mail.';
             formStatus.className = 'form-status error';
         } finally {
             submitBtn.disabled = false;

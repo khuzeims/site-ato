@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400..600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
 
@@ -85,6 +86,10 @@
                 <div class="form-group checkbox-group">
                     <input type="checkbox" id="charte" name="charte" required>
                     <label for="charte">J'accepte la charte et les valeurs de l'association *</label>
+                </div>
+                
+                <div class="form-group full">
+                    <div class="g-recaptcha" data-sitekey="6LdjKzotAAAAADm6Mmei5H43Ky7Vjvox7PuWWJrI"></div>
                 </div>
 
                 <button type="submit" class="btn-primary form-submit" id="submit-btn">Envoyer ma demande</button>

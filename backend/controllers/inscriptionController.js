@@ -40,6 +40,7 @@ exports.getInscriptionById = async (req, res) => {
 };
 
 // POST /api/inscriptions — créer une inscription (formulaire public du site)
+// Le captcha est déjà vérifié en amont par le middleware verifierCaptcha (voir inscriptionRoutes.js)
 exports.createInscription = async (req, res) => {
     try {
         const { evenementId, nom, prenom, email, telephone, tarif, dateInscription } = req.body;
