@@ -1,13 +1,14 @@
+const { envoyerConfirmationInscription, notifierAdmin } = require("../utils/emailService");
 const Inscription = require("../models/Inscription");
+const Evenement = require("../models/Evenement");
 
 // GET /api/inscriptions — liste toutes les inscriptions, avec le titre de l'événement lié
 exports.getAllInscriptions = async (req, res) => {
     try {
         const inscriptions = await Inscription.find()
             .sort({ dateInscription: -1 })
-            .populate("evenementId", "titre"); // récupère uniquement le champ "titre" de l'événement lié
+            .populate("evenementId", "titre");
 
-        // On reformate la réponse pour que le frontend admin trouve directement "evenementTitre"
         const inscriptionsFormatees = inscriptions.map((i) => ({
             _id: i._id,
             evenementId: i.evenementId?._id || i.evenementId,
@@ -55,7 +56,30 @@ exports.createInscription = async (req, res) => {
             dateInscription
         });
 
-        const inscriptionEnregistree = await nouvelleInscription.save();
+     const inscriptionEnregistree = await nouvelleInscription.save();
+
+        console.log("=== DEBUT ENVOI EMAILS INSCRIPTION ===");
+        console.log("evenementId reçu :", evenementId);
+
+        try {
+            const evenement = await Evenement.findById(evenementId);
+            console.log("Evenement trouvé :", evenement ? evenement.titre : "AUCUN");
+
+            const titreEvenement = evenement ? evenement.titre : "l'événement";
+
+            await envoyerConfirmationInscription(email, nom, prenom, titreEvenement);
+           
+
+            await notifierAdmin(
+                "Nouvelle inscription à un événement",
+                `<p>${prenom} ${nom} (${email}) s'est inscrit(e) à "${titreEvenement}".</p>
+                 <p>Tarif : ${tarif}</p>`
+            );
+            
+        } catch (emailError) {
+            console.error("ERREUR ENVOI EMAIL INSCRIPTION :", emailError);
+        }
+
         res.status(201).json(inscriptionEnregistree);
     } catch (error) {
         res.status(400).json({ message: "Erreur lors de la création de l'inscription.", erreur: error.message });

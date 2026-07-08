@@ -107,6 +107,8 @@ function ouvrirModaleEdition(id, evenements) {
     document.getElementById('event-lieu').value = evenement.lieu;
     document.getElementById('event-places').value = evenement.placesDisponibles;
     document.getElementById('event-statut').value = evenement.statut;
+    document.getElementById('event-tarif-adherent').value = evenement.tarifAdherent ?? '';
+    document.getElementById('event-tarif-non-adherent').value = evenement.tarifNonAdherent ?? '';
 
     if (evenement.photos && evenement.photos.length > 0) {
         eventPhotosPreview.innerHTML = evenement.photos.map((src) =>
@@ -163,6 +165,8 @@ eventForm.addEventListener('submit', async (event) => {
     formData.append('lieu', document.getElementById('event-lieu').value.trim());
     formData.append('placesDisponibles', document.getElementById('event-places').value);
     formData.append('statut', document.getElementById('event-statut').value);
+    formData.append('tarifAdherent', document.getElementById('event-tarif-adherent').value);
+    formData.append('tarifNonAdherent', document.getElementById('event-tarif-non-adherent').value);
 
     const photoFiles = Array.from(eventPhotosInput.files);
     photoFiles.forEach((file) => {

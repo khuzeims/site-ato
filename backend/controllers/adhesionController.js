@@ -1,3 +1,4 @@
+const { envoyerConfirmationAdhesion, notifierAdmin, envoyerChangementStatut } = require("../utils/emailService");
 const Adhesion = require("../models/Adhesion");
 
 // GET /api/adhesions — liste toutes les demandes d'adhésion
@@ -35,11 +36,23 @@ exports.createAdhesion = async (req, res) => {
             email,
             telephone,
             adresse,
-            statut: "en attente", // toujours "en attente" à la création, peu importe ce qu'envoie le client
+            statut: "en attente",
             dateDemande
         });
 
         const adhesionEnregistree = await nouvelleAdhesion.save();
+
+        try {
+            await envoyerConfirmationAdhesion(adhesionEnregistree.email, nom, prenom);
+            await notifierAdmin(
+                "Nouvelle demande d'adhésion",
+                `<p>${prenom} ${nom} (${email}) vient de faire une demande d'adhésion.</p>
+                 <p>Téléphone : ${telephone}<br>Adresse : ${adresse || "non renseignée"}</p>`
+            );
+        } catch (emailError) {
+            console.error("Erreur envoi email adhésion :", emailError.message);
+        }
+
         res.status(201).json(adhesionEnregistree);
     } catch (error) {
         res.status(400).json({ message: "Erreur lors de la création de la demande d'adhésion.", erreur: error.message });
@@ -49,14 +62,30 @@ exports.createAdhesion = async (req, res) => {
 // PUT /api/adhesions/:id — modifier le statut (utilisé par le dashboard admin)
 exports.updateAdhesion = async (req, res) => {
     try {
+        const adhesionAvant = await Adhesion.findById(req.params.id);
+        if (!adhesionAvant) {
+            return res.status(404).json({ message: "Demande d'adhésion introuvable." });
+        }
+
+        const statutAvant = adhesionAvant.statut;
+
         const adhesionModifiee = await Adhesion.findByIdAndUpdate(
             req.params.id,
             req.body,
             { new: true, runValidators: true }
         );
 
-        if (!adhesionModifiee) {
-            return res.status(404).json({ message: "Demande d'adhésion introuvable." });
+        if (req.body.statut && req.body.statut !== statutAvant) {
+            try {
+                await envoyerChangementStatut(
+                    adhesionModifiee.email,
+                    adhesionModifiee.nom,
+                    adhesionModifiee.prenom,
+                    adhesionModifiee.statut
+                );
+            } catch (emailError) {
+                console.error("Erreur envoi email changement statut :", emailError.message);
+            }
         }
 
         res.json(adhesionModifiee);

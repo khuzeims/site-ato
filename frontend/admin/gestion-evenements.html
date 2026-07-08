@@ -102,6 +102,17 @@
                         <label for="event-places">Places disponibles *</label>
                         <input type="number" id="event-places" min="0" required>
                     </div>
+                   <div class="form-row">
+                    <div class="form-group">
+                        <label for="event-tarif-adherent">Tarif adhérent (€)</label>
+                        <input type="number" id="event-tarif-adherent" min="0" step="0.5" placeholder="Ex : 5">
+                    </div>
+                    <div class="form-group">
+                        <label for="event-tarif-non-adherent">Tarif non-adhérent (€)</label>
+                        <input type="number" id="event-tarif-non-adherent" min="0" step="0.5" placeholder="Ex : 10">
+                    </div>
+                </div>
+                <p class="form-hint">Laissez les deux champs vides si l'événement est gratuit.</p>
                     <div class="form-group">
                         <label for="event-statut">Statut *</label>
                         <select id="event-statut" required>

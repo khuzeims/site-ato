@@ -26,7 +26,7 @@ exports.getEvenementById = async (req, res) => {
 // POST /api/evenements — créer un événement
 exports.createEvenement = async (req, res) => {
     try {
-        const { titre, description, date, lieu, placesDisponibles, statut } = req.body;
+        const { titre, description, date, lieu, placesDisponibles, statut,tarifAdherent, tarifNonAdherent  } = req.body;
 
         const nouvelEvenement = new Evenement({
             titre,
@@ -35,6 +35,8 @@ exports.createEvenement = async (req, res) => {
             lieu,
             placesDisponibles,
             statut,
+            tarifAdherent: tarifAdherent !== '' && tarifAdherent !== undefined ? Number(tarifAdherent) : undefined,
+            tarifNonAdherent: tarifNonAdherent !== '' && tarifNonAdherent !== undefined ? Number(tarifNonAdherent) : undefined,
             photos: req.files ? req.files.map((f) => "uploads/" + f.filename) : []
         });
 
@@ -50,6 +52,12 @@ exports.updateEvenement = async (req, res) => {
     try {
         const updateData = { ...req.body };
 
+        // Convertit les tarifs envoyés en string (FormData) vers Number, ou les retire si vides
+        
+        updateData.tarifAdherent = updateData.tarifAdherent !== '' && updateData.tarifAdherent !== undefined
+            ? Number(updateData.tarifAdherent) : null;
+        updateData.tarifNonAdherent = updateData.tarifNonAdherent !== '' && updateData.tarifNonAdherent !== undefined
+            ? Number(updateData.tarifNonAdherent) : null;
         // Si de nouvelles photos sont envoyées, on les AJOUTE à la galerie existante
         if (req.files && req.files.length > 0) {
             const evenementActuel = await Evenement.findById(req.params.id);

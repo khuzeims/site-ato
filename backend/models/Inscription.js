@@ -28,8 +28,9 @@ const inscriptionSchema = new mongoose.Schema({
     },
     tarif: {
         type: String,
-        enum: ["adherent", "non-adherent"],
-        required: true
+        enum: ["adherent", "non-adherent", "gratuit"],
+        default: "gratuit",
+        required: false
     },
     dateInscription: {
         type: String, // format "AAAA-MM-JJ"

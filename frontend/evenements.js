@@ -95,6 +95,27 @@ function formatDateLongue(isoDate) {
     return date.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 }
 
+// Formate un prix pour l'affichage : entier sans décimale (5€), sinon avec virgule (5,5€)
+function formatPrix(prix) {
+    const nombre = Number(prix);
+    return (Number.isInteger(nombre) ? nombre : nombre.toFixed(2).replace('.', ',')) + '€';
+}
+
+// Construit la ligne de tarifs à afficher sur la carte événement (ex: "Adhérent : 5€ — Non-adhérent : 10€")
+// Retourne une chaîne vide si l'événement est gratuit (aucun des deux tarifs renseigné)
+function texteTarifsCarte(evenement) {
+    const aAdherent = evenement.tarifAdherent !== null && evenement.tarifAdherent !== undefined;
+    const aNonAdherent = evenement.tarifNonAdherent !== null && evenement.tarifNonAdherent !== undefined;
+
+    if (!aAdherent && !aNonAdherent) return '';
+
+    const parties = [];
+    if (aAdherent) parties.push('Adhérent : ' + formatPrix(evenement.tarifAdherent));
+    if (aNonAdherent) parties.push('Non-adhérent : ' + formatPrix(evenement.tarifNonAdherent));
+
+    return parties.join(' — ');
+}
+
 async function chargerEvenementsAVenir() {
     try {
         const response = await fetch(API_URL_EVENEMENTS);
@@ -124,7 +145,10 @@ function afficherEvenementsAVenir(evenements) {
         return;
     }
 
-    upcomingContainer.innerHTML = evenements.map((evenement) => `
+    upcomingContainer.innerHTML = evenements.map((evenement) => {
+        const texteTarifs = texteTarifsCarte(evenement);
+
+        return `
         <div class="event-card-upcoming">
             ${evenement.photos && evenement.photos.length > 0
                 ? `<div class="event-card-photo"><img src="${evenement.photos[0]}" alt="${evenement.titre}"></div>`
@@ -134,14 +158,29 @@ function afficherEvenementsAVenir(evenements) {
                 <h3>${evenement.titre}</h3>
                 <p class="event-card-meta">${formatDateLongue(evenement.date)} · ${evenement.lieu}</p>
                 <p class="event-card-desc">${evenement.description}</p>
+                ${texteTarifs ? `<p class="event-card-tarifs">${texteTarifs}</p>` : ''}
                 <p class="event-card-places">${evenement.placesDisponibles} places disponibles</p>
-                <button class="btn-primary open-registration" data-id="${evenement._id}" data-titre="${evenement.titre}" data-date="${formatDateLongue(evenement.date)}" data-lieu="${evenement.lieu}">S'inscrire</button>
+                <button class="btn-primary open-registration"
+                    data-id="${evenement._id}"
+                    data-titre="${evenement.titre}"
+                    data-date="${formatDateLongue(evenement.date)}"
+                    data-lieu="${evenement.lieu}"
+                    data-tarif-adherent="${evenement.tarifAdherent ?? ''}"
+                    data-tarif-non-adherent="${evenement.tarifNonAdherent ?? ''}">S'inscrire</button>
             </div>
         </div>
-    `).join('');
+    `;
+    }).join('');
 
     document.querySelectorAll('.open-registration').forEach((btn) => {
-        btn.addEventListener('click', () => ouvrirFormulaireInscription(btn.dataset));
+        btn.addEventListener('click', () => ouvrirFormulaireInscription({
+            id: btn.dataset.id,
+            titre: btn.dataset.titre,
+            date: btn.dataset.date,
+            lieu: btn.dataset.lieu,
+            tarifAdherent: btn.dataset.tarifAdherent,
+            tarifNonAdherent: btn.dataset.tarifNonAdherent
+        }));
     });
 }
 
@@ -151,6 +190,44 @@ function ouvrirFormulaireInscription(data) {
     registrationSub.textContent = data.date + ' · ' + data.lieu;
     registrationStatus.textContent = '';
     registrationStatus.className = 'form-status';
+
+    // Affiche ou masque le bloc tarif selon que l'événement est payant ou gratuit.
+    // Si l'admin n'a renseigné ni tarif adhérent ni tarif non-adhérent côté back-office,
+    // l'événement est considéré comme gratuit : le bloc tarif est masqué et devient facultatif.
+    const tarifGroup = document.getElementById('registration-tarif-group');
+    const tarifOptions = document.getElementById('registration-tarif-radios');
+
+    const aAdherent = data.tarifAdherent !== '' && data.tarifAdherent !== undefined && data.tarifAdherent !== null;
+    const aNonAdherent = data.tarifNonAdherent !== '' && data.tarifNonAdherent !== undefined && data.tarifNonAdherent !== null;
+
+    if (tarifGroup && tarifOptions) {
+        if (aAdherent || aNonAdherent) {
+            let optionsHtml = '';
+
+            if (aAdherent) {
+                optionsHtml += `
+                    <label class="radio-option">
+                        <input type="radio" name="tarif" value="adherent" required>
+                        Adhérent — ${formatPrix(data.tarifAdherent)}
+                    </label>`;
+            }
+
+            if (aNonAdherent) {
+                optionsHtml += `
+                    <label class="radio-option">
+                        <input type="radio" name="tarif" value="non-adherent" required>
+                        Non-adhérent — ${formatPrix(data.tarifNonAdherent)}
+                    </label>`;
+            }
+
+            tarifOptions.innerHTML = optionsHtml;
+            tarifGroup.hidden = false;
+        } else {
+            tarifOptions.innerHTML = '';
+            tarifGroup.hidden = true;
+        }
+    }
+
     registrationSection.hidden = false;
     registrationSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -166,7 +243,7 @@ if (registrationForm) {
         event.preventDefault();
 
         if (!registrationForm.checkValidity()) {
-            registrationStatus.textContent = 'Merci de remplir tous les champs obligatoires (*), y compris le tarif.';
+            registrationStatus.textContent = 'Merci de remplir tous les champs obligatoires (*).';
             registrationStatus.className = 'form-status error';
             return;
         }
@@ -178,7 +255,10 @@ if (registrationForm) {
             return;
         }
 
-        const tarifChoisi = registrationForm.querySelector('input[name="tarif"]:checked').value;
+        // Le tarif n'est pas toujours présent (événement gratuit) : on sécurise la lecture
+        // pour éviter un crash si aucun radio n'est coché ou si le bloc est masqué.
+        const tarifInput = registrationForm.querySelector('input[name="tarif"]:checked');
+        const tarifChoisi = tarifInput ? tarifInput.value : 'gratuit';
 
         // Payload conforme au schéma MongoDB de la collection "inscription"
         const payload = {

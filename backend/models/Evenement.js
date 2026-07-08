@@ -24,6 +24,14 @@ const evenementSchema = new mongoose.Schema({
         required: true,
         min: 0
     },
+    tarifAdherent: {
+        type: Number,
+        min: 0
+    },
+    tarifNonAdherent: {
+        type: Number,
+        min: 0
+    },
     statut: {
         type: String,
         enum: ["à venir", "passé", "annulé"],
