@@ -8,8 +8,8 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const Admin = require("./models/Admin");
 
-const EMAIL_ADMIN = "admin@ato.fr";
-const MOT_DE_PASSE_ADMIN = "admin123"; // à changer après la première connexion si possible
+const EMAIL_ADMIN = "assotchad.tlse@gmail.com";
+const MOT_DE_PASSE_ADMIN = "Tchad235@"; // à changer après la première connexion si possible
 
 async function creerAdmin() {
     try {
