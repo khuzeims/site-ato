@@ -35,7 +35,7 @@ exports.createActualite = async (req, res) => {
             titre,
             datePublication,
             contenu: contenuParsed,
-            photo: req.file ? "uploads/" + req.file.filename : null
+            photo: req.file ? req.file.path : null
         });
 
         const actualiteEnregistree = await nouvelleActualite.save();
@@ -55,7 +55,7 @@ exports.updateActualite = async (req, res) => {
         }
 
         if (req.file) {
-            updateData.photo = "uploads/" + req.file.filename;
+        updateData.photo = req.file.path;
         }
 
         const actualiteModifiee = await Actualite.findByIdAndUpdate(
