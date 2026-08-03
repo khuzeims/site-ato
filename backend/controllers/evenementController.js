@@ -37,7 +37,7 @@ exports.createEvenement = async (req, res) => {
             statut,
             tarifAdherent: tarifAdherent !== '' && tarifAdherent !== undefined ? Number(tarifAdherent) : undefined,
             tarifNonAdherent: tarifNonAdherent !== '' && tarifNonAdherent !== undefined ? Number(tarifNonAdherent) : undefined,
-            photos: req.files ? req.files.map((f) => "uploads/" + f.filename) : []
+            photos: req.files ? req.files.map((f) => f.path) : []
         });
 
         const evenementEnregistre = await nouvelEvenement.save();
@@ -62,7 +62,7 @@ exports.updateEvenement = async (req, res) => {
         if (req.files && req.files.length > 0) {
             const evenementActuel = await Evenement.findById(req.params.id);
             const photosExistantes = evenementActuel ? evenementActuel.photos : [];
-            const nouvellesPhotos = req.files.map((f) => "uploads/" + f.filename);
+            const nouvellesPhotos = req.files.map((f) => f.path);
             updateData.photos = [...photosExistantes, ...nouvellesPhotos];
         }
 
