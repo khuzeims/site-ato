@@ -67,12 +67,11 @@ exports.updateEvenement = async (req, res) => {
         }
 
         const evenementModifie = await Evenement.findByIdAndUpdate(
-            req.params.id,
-            updateData,
-            { new: true, runValidators: true }
+        req.params.id,
+        updateData,
+        { returnDocument: "after", runValidators: true }
         );
-
-        if (!evenementModifie) {
+            if (!evenementModifie) {
             return res.status(404).json({ message: "Événement introuvable." });
         }
 

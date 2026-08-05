@@ -59,9 +59,9 @@ exports.updateActualite = async (req, res) => {
         }
 
         const actualiteModifiee = await Actualite.findByIdAndUpdate(
-            req.params.id,
-            updateData,
-            { new: true, runValidators: true }
+        req.params.id,
+        updateData,
+        { returnDocument: "after", runValidators: true }
         );
 
         if (!actualiteModifiee) {

@@ -70,9 +70,9 @@ exports.updateAdhesion = async (req, res) => {
         const statutAvant = adhesionAvant.statut;
 
         const adhesionModifiee = await Adhesion.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            { new: true, runValidators: true }
+        req.params.id,
+        req.body,
+        { returnDocument: "after", runValidators: true }
         );
 
         if (req.body.statut && req.body.statut !== statutAvant) {
