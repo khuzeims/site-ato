@@ -5,14 +5,54 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
+const fs = require("fs");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-// SERVIR LES FICHIERS STATIQUES DU FRONTEND
-// Le dossier "frontend" est au même niveau que "backend", donc on remonte d'un niveau (..)
+// ============================================
+// GESTION DES URLS PROPRES (SANS .html)
+// À placer AVANT express.static !
+// ============================================
+
+// 1) Redirige les anciennes URLs en .html vers la version propre
+//    Ex: /contact.html -> /contact (redirection 301 = permanente)
+app.use((req, res, next) => {
+    if (req.path.endsWith(".html")) {
+        const cleanPath = req.path.slice(0, -5); // enlève les 5 caractères ".html"
+        const target = cleanPath === "/index" ? "/" : cleanPath;
+        return res.redirect(301, target);
+    }
+    next();
+});
+
+// 2) Sert le bon fichier .html quand l'URL n'a pas d'extension
+//    Ex: /contact -> sert frontend/contact.html en interne (l'URL ne change pas)
+app.use((req, res, next) => {
+    // On laisse passer les routes API et les uploads sans y toucher
+    if (req.path.startsWith("/api") || req.path.startsWith("/uploads")) {
+        return next();
+    }
+
+    // Si l'URL n'a pas d'extension (pas de .css, .js, .png, etc.)
+    if (!path.extname(req.path)) {
+        const htmlPath = path.join(__dirname, "..", "frontend", req.path + ".html");
+        fs.access(htmlPath, fs.constants.F_OK, (err) => {
+            if (!err) {
+                return res.sendFile(htmlPath);
+            }
+            next(); // pas trouvé -> on laisse express.static gérer (ex: "/" -> index.html)
+        });
+    } else {
+        next();
+    }
+});
+
+// ============================================
+// FICHIERS STATIQUES DU FRONTEND
+// ============================================
 app.use(express.static(path.join(__dirname, "..", "frontend")));
 
 // SERVIR LES PHOTOS UPLOADÉES (événements, actualités)
