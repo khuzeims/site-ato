@@ -1,25 +1,57 @@
-const nodemailer = require("nodemailer");
+const axios = require("axios");
 require("dotenv").config();
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  requireTLS: true,
-  family: 4, // <--- Force l'utilisation d'IPv4 uniquement
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_APP_PASSWORD,
-  },
-  connectionTimeout: 10000,
-});
+function extractEmail(value) {
+  if (!value) return process.env.EMAIL_USER || "";
+  const match = value.match(/<(.+)>/);
+  return match ? match[1] : value.trim();
+}
 
-transporter.verify((error, success) => {
-  if (error) {
-    console.error("SMTP VERIFY ERROR:", error);
-  } else {
-    console.log("SMTP READY");
-  }
-});
+function extractName(value) {
+  if (!value) return "ATO";
+  const match = value.match(/^(.+)\s*</);
+  return match ? match[1].trim().replace(/"/g, "") : "ATO";
+}
+
+const transporter = {
+  async sendMail(options) {
+    try {
+      const senderEmail = extractEmail(options.from);
+      const senderName = extractName(options.from);
+
+      const response = await axios.post(
+        "https://api.brevo.com/v3/smtp/email",
+        {
+          sender: {
+            name: senderName,
+            email: senderEmail,
+          },
+          to: [
+            {
+              email: options.to,
+            },
+          ],
+          subject: options.subject,
+          htmlContent: options.html || options.text || "",
+        },
+        {
+          headers: {
+            "api-key": process.env.BREVO_API_KEY,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Email envoyé via Brevo API :", response.data.messageId);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Erreur envoi email Brevo API :",
+        error.response?.data || error.message
+      );
+      throw error;
+    }
+  },
+};
 
 module.exports = transporter;
