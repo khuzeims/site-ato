@@ -38,7 +38,7 @@ async function afficherArticle() {
 
         titleEl.textContent = actualite.titre;
         dateEl.textContent = formatDateLongue(actualite.datePublication);
-        pageTitleEl.textContent = actualite.titre + " — Association des Tchadiens d'Occitanie";
+       pageTitleEl.textContent = actualite.titre + " — Association des Tchadiens d'Occitanie";
 
         if (actualite.photo) {
             imageEl.innerHTML = `<img src="${actualite.photo}" alt="${actualite.titre}">`;
