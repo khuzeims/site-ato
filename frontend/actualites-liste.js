@@ -54,7 +54,7 @@ function afficherActualites(actualites) {
                 <p class="news-date">${formatDateLongue(actualite.datePublication)}</p>
                 <h3>${actualite.titre}</h3>
                 <p>${extraitTexte(actualite.contenu)}</p>
-                <a href="actualite.html?id=${actualite._id}" class="link-arrow">Lire la suite →</a>
+                <a href="/actualite?id=${actualite._id}" class="link-arrow">Lire la suite →</a>
             </div>
         </article>
     `).join('');
