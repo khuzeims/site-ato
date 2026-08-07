@@ -23,7 +23,8 @@ app.use((req, res, next) => {
     if (req.path.endsWith(".html")) {
         const cleanPath = req.path.slice(0, -5); // enlève les 5 caractères ".html"
         const target = cleanPath === "/index" ? "/" : cleanPath;
-        return res.redirect(301, target);
+        const queryString = req.url.slice(req.path.length);
+        return res.redirect(301, target + queryString);
     }
     next();
 });
