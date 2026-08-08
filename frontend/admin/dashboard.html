@@ -13,33 +13,26 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400..600&family=Inter:wght@400;500;600;700&display=swap"></noscript>
 
     <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="admin.css?v=10">
+    <link rel="stylesheet" href="admin.css">
 </head>
 <body class="admin-body">
 
     <div class="admin-layout">
 
         <aside class="admin-sidebar">
-    <div class="admin-sidebar-logo">
-        <img src="../image/logo.jpeg" alt="Logo de l'Association des Tchadiens d'Occitanie">
-        <span>ATO admin</span>
-    </div>
+            <div class="admin-sidebar-logo">
+                <img src="../image/logo.jpeg" alt="Logo de l'Association des Tchadiens d'Occitanie">
+                <span>ATO admin</span>
+            </div>
 
-    <button class="admin-nav-toggle" id="admin-nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="admin-nav">
-        <span></span>
-        <span></span>
-        <span></span>
-    </button>
+            <nav class="admin-nav">
+                <a href="dashboard.html" class="admin-nav-link active">Tableau de bord</a>
+                <a href="gestion-evenements.html" class="admin-nav-link">Événements</a>
+                <a href="gestion-actualites.html" class="admin-nav-link">Actualités</a>
+            </nav>
 
-    <nav class="admin-nav" id="admin-nav">
-        <a href="dashboard.html" class="admin-nav-link active">Tableau de bord</a>
-        <a href="gestion-evenements.html" class="admin-nav-link">Événements</a>
-        <a href="gestion-actualites.html" class="admin-nav-link">Actualités</a>
-        <button class="admin-logout admin-logout-mobile" id="logout-btn-mobile">Se déconnecter</button>
-    </nav>
-
-    <button class="admin-logout admin-logout-desktop" id="logout-btn">Se déconnecter</button>
-</aside>
+            <button class="admin-logout" id="logout-btn">Se déconnecter</button>
+        </aside>
 
         <main class="admin-main">
 
@@ -101,25 +94,5 @@
 
     <script src="admin-auth.js"></script>
     <script src="dashboard.js"></script>
-    <script>
-        const adminNavToggle = document.getElementById('admin-nav-toggle');
-        const adminNav = document.getElementById('admin-nav');
-
-        if (adminNavToggle && adminNav) {
-            adminNavToggle.addEventListener('click', () => {
-                const isOpen = adminNav.classList.toggle('open');
-                adminNavToggle.classList.toggle('active');
-                adminNavToggle.setAttribute('aria-expanded', isOpen);
-            });
-        }
-
-        // Duplique le comportement du bouton déconnexion mobile vers le bouton desktop
-        const logoutMobile = document.getElementById('logout-btn-mobile');
-        const logoutDesktop = document.getElementById('logout-btn');
-        if (logoutMobile && logoutDesktop) {
-            logoutMobile.addEventListener('click', () => logoutDesktop.click());
-        }
-    </script>
-
 </body>
 </html>
