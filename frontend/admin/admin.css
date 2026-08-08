@@ -685,26 +685,53 @@
         flex-direction: column;
     }
 
+    /* Barre du haut sur mobile : logo + bouton déconnexion sur la
+       même ligne, puis le menu (Tableau de bord / Événements /
+       Actualités) passe proprement à la ligne suivante, sans rien
+       couper ni faire défiler horizontalement. */
     .admin-sidebar {
         width: 100%;
         flex-direction: row;
+        flex-wrap: wrap;
         align-items: center;
         padding: 14px 16px;
+        row-gap: 12px;
+        column-gap: 10px;
     }
 
     .admin-sidebar-logo {
-        padding: 0 12px 0 0;
+        order: 1;
+        padding: 0;
+        flex-shrink: 0;
     }
 
-    .admin-nav {
-        flex-direction: row;
-        flex: 1;
-        overflow-x: auto;
+    .admin-sidebar-logo span {
+        white-space: nowrap;
+        font-size: 1rem;
     }
 
     .admin-logout {
+        order: 2;
         margin-top: 0;
+        margin-left: auto;
         flex-shrink: 0;
+        padding: 9px 14px;
+        font-size: 0.85rem;
+    }
+
+    .admin-nav {
+        order: 3;
+        flex: 1 1 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+        overflow: visible;
+    }
+
+    .admin-nav-link {
+        white-space: nowrap;
+        padding: 8px 13px;
+        font-size: 0.85rem;
     }
 
     .admin-main {
@@ -741,6 +768,20 @@
         border-radius: var(--admin-radius);
     }
 
+    /* scrollbar plus discrète pour les tableaux qui débordent */
+    .admin-table-wrap {
+        scrollbar-width: thin;
+    }
+
+    .admin-table-wrap::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .admin-table-wrap::-webkit-scrollbar-thumb {
+        background: #ddd6c4;
+        border-radius: 4px;
+    }
+
     .form-row {
         flex-direction: column;
         gap: 0;
@@ -754,6 +795,20 @@
 @media (max-width: 480px) {
     .admin-main {
         padding: 20px 14px;
+    }
+
+    .admin-sidebar {
+        padding: 12px 14px;
+    }
+
+    .admin-nav-link {
+        padding: 7px 11px;
+        font-size: 0.8rem;
+    }
+
+    .admin-logout {
+        padding: 7px 12px;
+        font-size: 0.8rem;
     }
 
     .admin-modal-box {
