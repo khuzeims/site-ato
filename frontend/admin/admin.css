@@ -207,17 +207,21 @@
 
 .admin-header {
     margin-bottom: 32px;
+    display: block;
 }
 
 .admin-header h1 {
+    display: block;
     font-family: "Fraunces", serif;
     font-weight: 600;
     font-size: 2rem;
-    margin: 0 0 6px;
+    margin: 0 0 4px;
     color: var(--nuit);
+    line-height: 1.2;
 }
 
 .admin-header p {
+    display: block;
     margin: 0;
     color: #7b7568;
     font-size: 0.95rem;
@@ -225,9 +229,15 @@
 
 .admin-header-row {
     display: flex;
+    flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
     gap: 16px;
+}
+
+.admin-header-row > div {
+    display: flex;
+    flex-direction: column;
 }
 
 .admin-section {
@@ -276,20 +286,37 @@
     margin-top: 6px;
 }
 
-/* Boutons d'action dans les tableaux (générés en JS) */
+/* Boutons d'action dans les tableaux (générés en JS)
+   Même gabarit (padding, bordure, hauteur) pour que Modifier/Supprimer
+   restent parfaitement alignés côte à côte — seule la couleur change. */
 
-.admin-action-edit {
+.admin-actions,
+.admin-table td .admin-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.admin-action-edit,
+.admin-action-delete {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background: transparent;
     border: 1px solid #d8d2c2;
-    color: var(--nuit);
     border-radius: 8px;
-    padding: 7px 14px;
+    padding: 7px 16px;
     font-family: "Inter", sans-serif;
     font-size: 0.85rem;
     font-weight: 500;
+    line-height: 1.4;
     cursor: pointer;
     white-space: nowrap;
-    transition: border-color 0.15s ease, color 0.15s ease;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.admin-action-edit {
+    color: var(--nuit);
 }
 
 .admin-action-edit:hover {
@@ -298,20 +325,13 @@
 }
 
 .admin-action-delete {
-    background: none;
-    border: 1px solid transparent;
     color: var(--terre);
-    border-radius: 8px;
-    font-family: "Inter", sans-serif;
-    font-size: 0.85rem;
-    font-weight: 500;
-    cursor: pointer;
-    padding: 7px 10px;
-    white-space: nowrap;
+    border-color: #ecd4c4;
 }
 
 .admin-action-delete:hover {
     background: #f6ded1;
+    border-color: var(--terre);
     color: var(--terre-dark);
 }
 
@@ -366,6 +386,12 @@
     vertical-align: middle;
 }
 
+.admin-table thead th:last-child,
+.admin-table tbody td:last-child {
+    width: 1%;
+    white-space: nowrap;
+}
+
 .admin-table tbody tr:last-child td {
     border-bottom: none;
 }
@@ -411,11 +437,6 @@
 .admin-table-excerpt {
     max-width: 260px;
     color: #7b7568;
-}
-
-.admin-table td .admin-actions {
-    display: flex;
-    gap: 8px;
 }
 
 /* Statut (pastilles) — classes générées par gestion-evenements.js :
