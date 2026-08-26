@@ -7,6 +7,9 @@ const API_URL_INSCRIPTIONS = '/api/inscriptions';
 const adhesionsTbody = document.getElementById('adhesions-tbody');
 const inscriptionsTbody = document.getElementById('inscriptions-tbody');
 const logoutBtn = document.getElementById('logout-btn');
+const exportAdhesionsBtn = document.getElementById('export-adhesions-btn');
+const exportInscriptionsBtn = document.getElementById('export-inscriptions-btn');
+
 
 logoutBtn.addEventListener('click', () => {
     AdminAuth.logout();
@@ -196,6 +199,40 @@ async function supprimerInscription(id) {
         alert('La suppression a échoué. Merci de réessayer.');
     }
 }
+async function telechargerExcel(url, nomFichierParDefaut) {
+    try {
+        const response = await fetch(url, {
+            headers: AdminAuth.authHeaders()
+        });
+
+        if (!response.ok) {
+            throw new Error('Échec de l\'export (' + response.status + ')');
+        }
+
+        const blob = await response.blob();
+        const lienTelechargement = document.createElement('a');
+        const objectUrl = URL.createObjectURL(blob);
+
+        lienTelechargement.href = objectUrl;
+        lienTelechargement.download = nomFichierParDefaut;
+        document.body.appendChild(lienTelechargement);
+        lienTelechargement.click();
+        document.body.removeChild(lienTelechargement);
+        URL.revokeObjectURL(objectUrl);
+
+    } catch (error) {
+        console.error('Erreur lors de l\'export Excel :', error);
+        alert('L\'export a échoué. Merci de réessayer.');
+    }
+}
+
+exportAdhesionsBtn.addEventListener('click', () => {
+    telechargerExcel(`${API_URL_ADHESIONS}/export/excel`, 'adhesions.xlsx');
+});
+
+exportInscriptionsBtn.addEventListener('click', () => {
+    telechargerExcel(`${API_URL_INSCRIPTIONS}/export/excel`, 'inscriptions.xlsx');
+});
 
 // Chargement initial
 chargerAdhesions();
