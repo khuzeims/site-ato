@@ -9,6 +9,7 @@ router.post("/", verifierCaptcha, inscriptionController.createInscription);
 
 // Routes protégées (réservées à l'admin connecté, données personnelles)
 router.get("/", verifierToken, inscriptionController.getAllInscriptions);
+router.get("/export/excel", verifierToken, inscriptionController.exportInscriptionsExcel);
 router.get("/:id", verifierToken, inscriptionController.getInscriptionById);
 router.delete("/:id", verifierToken, inscriptionController.deleteInscription);
 

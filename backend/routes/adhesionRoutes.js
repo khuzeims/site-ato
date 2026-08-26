@@ -9,6 +9,7 @@ router.post("/", verifierCaptcha, adhesionController.createAdhesion);
 
 // Routes protégées (réservées à l'admin connecté, données personnelles)
 router.get("/", verifierToken, adhesionController.getAllAdhesions);
+router.get("/export/excel", verifierToken, adhesionController.exportAdhesionsExcel);
 router.get("/:id", verifierToken, adhesionController.getAdhesionById);
 router.put("/:id", verifierToken, adhesionController.updateAdhesion);
 router.delete("/:id", verifierToken, adhesionController.deleteAdhesion);

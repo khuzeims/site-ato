@@ -1,6 +1,7 @@
 const { envoyerConfirmationInscription, notifierAdmin } = require("../utils/emailService");
 const Inscription = require("../models/Inscription");
 const Evenement = require("../models/Evenement");
+const ExcelJS = require("exceljs");
 
 // GET /api/inscriptions — liste toutes les inscriptions, avec le titre de l'événement lié
 exports.getAllInscriptions = async (req, res) => {
@@ -26,7 +27,55 @@ exports.getAllInscriptions = async (req, res) => {
         res.status(500).json({ message: "Erreur lors de la récupération des inscriptions.", erreur: error.message });
     }
 };
+// GET /api/inscriptions/export/excel — export Excel des inscriptions
+exports.exportInscriptionsExcel = async (req, res) => {
+    try {
+        const inscriptions = await Inscription.find()
+            .sort({ dateInscription: -1 })
+            .populate("evenementId", "titre");
 
+        const classeur = new ExcelJS.Workbook();
+        const feuille = classeur.addWorksheet("Inscriptions");
+
+        feuille.columns = [
+            { header: "Événement", key: "evenement", width: 28 },
+            { header: "Nom", key: "nom", width: 20 },
+            { header: "Prénom", key: "prenom", width: 20 },
+            { header: "Email", key: "email", width: 28 },
+            { header: "Téléphone", key: "telephone", width: 16 },
+            { header: "Tarif", key: "tarif", width: 20 },
+            { header: "Date d'inscription", key: "dateInscription", width: 18 }
+        ];
+
+        feuille.getRow(1).font = { bold: true };
+
+        inscriptions.forEach((i) => {
+            feuille.addRow({
+                evenement: i.evenementId?.titre || "Événement supprimé",
+                nom: i.nom,
+                prenom: i.prenom,
+                email: i.email,
+                telephone: i.telephone,
+                tarif: i.tarif === "adherent" ? "Adhérent (20 €)" : "Non-adhérent (25 €)",
+                dateInscription: i.dateInscription ? new Date(i.dateInscription).toLocaleDateString("fr-FR") : "—"
+            });
+        });
+
+        const nomFichier = `inscriptions_${new Date().toISOString().slice(0, 10)}.xlsx`;
+
+        res.setHeader(
+            "Content-Type",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        );
+        res.setHeader("Content-Disposition", `attachment; filename="${nomFichier}"`);
+
+        await classeur.xlsx.write(res);
+        res.end();
+
+    } catch (error) {
+        res.status(500).json({ message: "Erreur lors de l'export Excel.", erreur: error.message });
+    }
+};
 // GET /api/inscriptions/:id — une seule inscription
 exports.getInscriptionById = async (req, res) => {
     try {

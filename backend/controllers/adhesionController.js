@@ -1,6 +1,6 @@
 const { envoyerConfirmationAdhesion, notifierAdmin, envoyerChangementStatut } = require("../utils/emailService");
 const Adhesion = require("../models/Adhesion");
-
+const ExcelJS = require("exceljs");
 // GET /api/adhesions — liste toutes les demandes d'adhésion
 exports.getAllAdhesions = async (req, res) => {
     try {
@@ -21,6 +21,54 @@ exports.getAdhesionById = async (req, res) => {
         res.json(adhesion);
     } catch (error) {
         res.status(500).json({ message: "Erreur lors de la récupération de l'adhésion.", erreur: error.message });
+    }
+};
+
+// GET /api/adhesions/export/excel — export Excel des demandes d'adhésion
+exports.exportAdhesionsExcel = async (req, res) => {
+    try {
+        const adhesions = await Adhesion.find().sort({ dateDemande: -1 });
+
+        const classeur = new ExcelJS.Workbook();
+        const feuille = classeur.addWorksheet("Adhésions");
+
+        feuille.columns = [
+            { header: "Nom", key: "nom", width: 20 },
+            { header: "Prénom", key: "prenom", width: 20 },
+            { header: "Email", key: "email", width: 28 },
+            { header: "Téléphone", key: "telephone", width: 16 },
+            { header: "Adresse", key: "adresse", width: 30 },
+            { header: "Date de la demande", key: "dateDemande", width: 18 },
+            { header: "Statut", key: "statut", width: 14 }
+        ];
+
+        feuille.getRow(1).font = { bold: true };
+
+        adhesions.forEach((a) => {
+            feuille.addRow({
+                nom: a.nom,
+                prenom: a.prenom,
+                email: a.email,
+                telephone: a.telephone,
+                adresse: a.adresse || "—",
+                dateDemande: a.dateDemande ? new Date(a.dateDemande).toLocaleDateString("fr-FR") : "—",
+                statut: a.statut
+            });
+        });
+
+        const nomFichier = `adhesions_${new Date().toISOString().slice(0, 10)}.xlsx`;
+
+        res.setHeader(
+            "Content-Type",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        );
+        res.setHeader("Content-Disposition", `attachment; filename="${nomFichier}"`);
+
+        await classeur.xlsx.write(res);
+        res.end();
+
+    } catch (error) {
+        res.status(500).json({ message: "Erreur lors de l'export Excel.", erreur: error.message });
     }
 };
 
